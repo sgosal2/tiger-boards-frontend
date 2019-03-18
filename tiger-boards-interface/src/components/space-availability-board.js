@@ -27,8 +27,13 @@ const dummyData = [
 const formatAvailabilityData = availabilityData =>
   availabilityData.map(data => {
     return (
-      <TableRow>
-        <TableCell>{data.space_id}</TableCell>
+      <TableRow hover key={data.space_id}>
+        <TableCell
+          className="space-id-cell"
+          onClick={() => alert(data.space_id)}
+        >
+          {data.space_id}
+        </TableCell>
         <TableCell>
           {data.is_available ? "Available" : "Not Available"}
         </TableCell>

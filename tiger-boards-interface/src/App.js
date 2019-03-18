@@ -1,10 +1,11 @@
-import React from "react";
-import AppBar from "@material-ui/core/AppBar";
+import React, { useState } from "react";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { Toolbar, Typography, Paper } from "@material-ui/core";
+import { Typography, Paper } from "@material-ui/core";
 
 import "./scss/main.scss";
 import SpaceAvailabilityBoard from "./components/space-availability-board";
+import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
+import { LoginDialog } from "./components/login-dialog";
 
 const theme = createMuiTheme({
   palette: {
@@ -21,16 +22,16 @@ const theme = createMuiTheme({
 });
 
 const App = () => {
+  const [showLogin, setShowLogin] = useState(false);
+
   return (
     <MuiThemeProvider theme={theme}>
       <div className="App">
-        <AppBar position="static" color="primary">
-          <Toolbar>
-            <Typography variant="h6" color="inherit">
-              TigerBoards
-            </Typography>
-          </Toolbar>
-        </AppBar>
+        <TigerBoardsAppBar handleLoginClick={() => setShowLogin(true)} />
+        <LoginDialog
+          isOpen={showLogin}
+          handleClose={() => setShowLogin(false)}
+        />
 
         <div id="app-content-section">
           {/* TODO: Change this to get current section title from state */}

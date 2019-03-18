@@ -19,7 +19,7 @@ export const SpaceAvailabilityParameters = () => {
           value="Chambers"
           // TODO: Change this to set building state to event.target.value
           onChange={event => {
-            console.log(event.target.value);
+            alert(event.target.value);
           }}
           name="building"
         >
