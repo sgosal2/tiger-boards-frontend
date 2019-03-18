@@ -15,7 +15,7 @@ export const LoginDialog = ({ isOpen, handleClose }) => {
       onClose={() => handleClose()}
       aria-labelledby="login-dialog-title"
     >
-      <DialogTitle id="login-dialog-title">Login</DialogTitle>
+      <DialogTitle id="login-dialog-title">Login to TigerBoards</DialogTitle>
       <DialogContent>
         <TextField
           autoFocus
@@ -34,6 +34,9 @@ export const LoginDialog = ({ isOpen, handleClose }) => {
         />
       </DialogContent>
       <DialogActions>
+        <Button onClick={() => handleClose()} color="primary">
+          Create Account
+        </Button>
         <Button onClick={() => handleClose()} color="primary">
           Cancel
         </Button>
