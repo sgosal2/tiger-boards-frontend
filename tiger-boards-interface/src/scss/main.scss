@@ -1,3 +1,5 @@
+@import "./space_availability_board";
+
 .App {
   text-align: center;
 }
@@ -30,4 +32,20 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+#app-content {
+  max-height: 75vh;
+  margin-top: 5vh;
+  overflow-x: auto;
+}
+
+#app-content-section {
+  max-width: 80vw;
+  margin: auto;
+}
+
+#view-header-text {
+  margin-top: 1rem;
+  cursor: default;
 }

@@ -1,8 +1,10 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
-import "./scss/main.scss";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { Toolbar, Typography } from "@material-ui/core";
+import { Toolbar, Typography, Paper } from "@material-ui/core";
+
+import "./scss/main.scss";
+import SpaceAvailabilityBoard from "./components/space-availability-board";
 
 const theme = createMuiTheme({
   palette: {
@@ -12,6 +14,9 @@ const theme = createMuiTheme({
     secondary: {
       main: "#fdd835"
     }
+  },
+  typography: {
+    useNextVariants: true
   }
 });
 
@@ -26,6 +31,18 @@ const App = () => {
             </Typography>
           </Toolbar>
         </AppBar>
+
+        <div id="app-content-section">
+          {/* TODO: Change this to get current section title from state */}
+          <Typography align="left" variant="h2" id="view-header-text">
+            Space Availability
+          </Typography>
+
+          <Paper id="app-content">
+            {/* TODO: ReactRouter will go here */}
+            <SpaceAvailabilityBoard />
+          </Paper>
+        </div>
       </div>
     </MuiThemeProvider>
   );
