@@ -1,23 +1,33 @@
 import React from "react";
+import AppBar from "@material-ui/core/AppBar";
 import "./scss/main.scss";
+import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
+import { Toolbar, Typography } from "@material-ui/core";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#ef6c00"
+    },
+    secondary: {
+      main: "#fdd835"
+    }
+  }
+});
 
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MuiThemeProvider theme={theme}>
+      <div className="App">
+        <AppBar position="static" color="primary">
+          <Toolbar>
+            <Typography variant="h6" color="inherit">
+              TigerBoards
+            </Typography>
+          </Toolbar>
+        </AppBar>
+      </div>
+    </MuiThemeProvider>
   );
 };
 
