@@ -7,6 +7,26 @@ import {
   TextField
 } from "@material-ui/core";
 
+const currentDateTime = () => {
+  /* Required format is yyyy-MM-ddThh:mm */
+
+  const today = new Date();
+  let month = today.getMonth() + 1;
+  month = month >= 10 ? month : `0${month}`;
+  let currDate = today.getDate();
+  currDate = currDate >= 10 ? currDate : `0${currDate}`;
+  const date = `${today.getFullYear()}-${month}-${currDate}`;
+
+  let hour = today.getHours();
+  hour = hour >= 10 ? hour : `0${hour}`;
+  let minutes = today.getMinutes();
+  minutes = minutes >= 10 ? minutes : `0${minutes}`;
+  const time = `${hour}:${minutes}`;
+
+  const datetime = `${date}T${time}`;
+  return datetime;
+};
+
 export const SpaceAvailabilityParameters = () => {
   return (
     <div id="space-availability-parameters">
@@ -32,12 +52,11 @@ export const SpaceAvailabilityParameters = () => {
         </Select>
       </FormControl>
       <FormControl className="space-availability-parameter-formcontrol">
-        {/* TODO: set defaultValue to current date time */}
         <TextField
           id="space-availability-date-field"
-          label="Date"
+          label="Date and Time"
           type="datetime-local"
-          defaultValue="2017-05-24T10:30"
+          defaultValue={currentDateTime()}
           InputLabelProps={{
             shrink: true
           }}
