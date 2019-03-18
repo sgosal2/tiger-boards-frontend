@@ -52,6 +52,8 @@ export const SpaceAvailabilityParameters = () => {
         </Select>
       </FormControl>
       <FormControl className="space-availability-parameter-formcontrol">
+        {/* TODO: needs onChange to set state value 
+        and it needs to read value from state */}
         <TextField
           id="space-availability-date-field"
           label="Date and Time"
