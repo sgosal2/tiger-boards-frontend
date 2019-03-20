@@ -14,7 +14,7 @@ import {
 import { SpaceAvailabilityParameters } from "./space-availability-parameters";
 
 // Don't use this.
-const dummyData = [
+const dummyAvailabilityData = [
   {
     space_id: "CTC 113",
     is_available: true
@@ -29,8 +29,20 @@ const dummyData = [
   }
 ];
 
+const dummySpaceDetailData = {
+  capacity: 25,
+  features: ["Whiteboard", "Projector"]
+};
+
+const formatSpaceFeaturesData = spaceFeaturesData => {
+  return spaceFeaturesData.map(feature => {
+    return <DialogContent>{feature}</DialogContent>;
+  });
+};
+
 const formatAvailabilityData = (
   availabilityData,
+  spaceDetailData,
   modalOpen,
   handleModalOpen,
   handleModalClose
@@ -47,11 +59,12 @@ const formatAvailabilityData = (
           aria-labelledby="space-details-dialog-title"
         >
           <DialogTitle id="login-dialog-title">{data.space_id}</DialogTitle>
+          <DialogContent>Capacity: {spaceDetailData.capacity}</DialogContent>
           <DialogContent>
-            <div>Example dialog</div>
+            {formatSpaceFeaturesData(spaceDetailData.features)}
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleModalClose}>Close dialog</Button>
+            <Button onClick={handleModalClose}>Close</Button>
           </DialogActions>
         </Dialog>
         <TableCell>
@@ -80,7 +93,8 @@ export const SpaceAvailabilityBoard = () => {
         {/* Replace dummyData with data from state */}
         <TableBody>
           {formatAvailabilityData(
-            dummyData,
+            dummyAvailabilityData,
+            dummySpaceDetailData,
             modalOpen,
             handleModalOpen,
             handleModalClose
