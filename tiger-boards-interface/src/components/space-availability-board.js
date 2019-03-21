@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useReducer } from "react";
 import {
   Table,
   TableHead,
@@ -7,6 +7,12 @@ import {
   TableBody
 } from "@material-ui/core";
 import { SpaceAvailabilityParameters } from "./space-availability-parameters";
+import currentDateTime from "../utilities/current-date-time";
+import spaceAvailabilityReducer from "../reducers/space-availability-reducer";
+import useDataApi from "../utilities/use-data-api";
+import config from "../config.json";
+
+export const SpaceAvailabilityContext = React.createContext();
 
 // Don't use this.
 const dummyData = [
@@ -41,21 +47,32 @@ const formatAvailabilityData = availabilityData =>
     );
   });
 
+const initialState = {
+  building: config.DEFAULT_BUILDING,
+  datetime: currentDateTime(),
+  data: {}
+};
+
 export const SpaceAvailabilityBoard = () => {
+  const { data, isLoading, isError, doFetch } = useDataApi(config.API_SPACES);
+  const [state, dispatch] = useReducer(spaceAvailabilityReducer, initialState);
+
   return (
     <div id="space-availability-board">
-      <SpaceAvailabilityParameters />
+      <SpaceAvailabilityContext.Provider value={{ state, dispatch }}>
+        <SpaceAvailabilityParameters />
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Space</TableCell>
-            <TableCell>Availability</TableCell>
-          </TableRow>
-        </TableHead>
-        {/* Replace dummyData with data from state */}
-        <TableBody>{formatAvailabilityData(dummyData)}</TableBody>
-      </Table>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Space</TableCell>
+              <TableCell>Availability</TableCell>
+            </TableRow>
+          </TableHead>
+          {/* Replace dummyData with data from state */}
+          <TableBody>{formatAvailabilityData(dummyData)}</TableBody>
+        </Table>
+      </SpaceAvailabilityContext.Provider>
     </div>
   );
 };
