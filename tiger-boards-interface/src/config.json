@@ -1,4 +1,4 @@
 {
-  "API_SPACES": "https://jsonplaceholder.typicode.com/todos/1",
+  "API_SPACES": "http://localhost:5000/api/spaces",
   "DEFAULT_BUILDING": "Chambers"
 }
