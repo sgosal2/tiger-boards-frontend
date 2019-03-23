@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
 import {
   Table,
   TableHead,
@@ -54,13 +54,20 @@ const initialState = {
 };
 
 export const SpaceAvailabilityBoard = () => {
-  const { data, isLoading, isError, doFetch } = useDataApi(config.API_SPACES);
   const [state, dispatch] = useReducer(spaceAvailabilityReducer, initialState);
+  const { data, isLoading, isError, doFetch } = useDataApi("");
+
+  const urlParams = `?datetime=${state.datetime}&building=${state.building}`;
+  const url = `${config.API_SPACES}${urlParams}`;
+
+  useEffect(() => {
+    doFetch(url);
+  }, [url]);
 
   return (
     <div id="space-availability-board">
       <SpaceAvailabilityContext.Provider value={{ state, dispatch }}>
-        <SpaceAvailabilityParameters />
+        <SpaceAvailabilityParameters disabled={isLoading} />
 
         <Table>
           <TableHead>

@@ -9,11 +9,13 @@ import {
 
 import { SpaceAvailabilityContext } from "./space-availability-board";
 
-export const SpaceAvailabilityParameters = () => {
+export const SpaceAvailabilityParameters = ({ disabled }) => {
   const {
     state: { building, datetime },
     dispatch
   } = useContext(SpaceAvailabilityContext);
+
+  console.log(disabled);
 
   return (
     <div id="space-availability-parameters">
@@ -26,6 +28,7 @@ export const SpaceAvailabilityParameters = () => {
           onChange={event => {
             dispatch({ type: "change-building", value: event.target.value });
           }}
+          disabled={disabled}
           name="building"
         >
           {/* TODO: Create a generator to generate these menuitems from data in
@@ -42,6 +45,7 @@ export const SpaceAvailabilityParameters = () => {
           label="Date and Time"
           type="datetime-local"
           value={datetime}
+          disabled={disabled}
           onChange={event => {
             dispatch({ type: "change-datetime", value: event.target.value });
           }}
