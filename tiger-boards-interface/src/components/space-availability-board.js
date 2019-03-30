@@ -55,7 +55,7 @@ const initialState = {
 
 export const SpaceAvailabilityBoard = () => {
   const [state, dispatch] = useReducer(spaceAvailabilityReducer, initialState);
-  const { data, isLoading, isError, doFetch } = useDataApi("");
+  const { data, isLoading, isError, doFetch } = useDataApi([]);
 
   const urlParams = `?datetime=${state.datetime}&building=${state.building}`;
   const url = `${config.API_SPACES}${urlParams}`;
@@ -63,6 +63,10 @@ export const SpaceAvailabilityBoard = () => {
   useEffect(() => {
     doFetch(url);
   }, [url]);
+
+  // const availabilityData = isError ? dummyData : data;
+  const availabilityData = dummyData;
+  console.log(availabilityData);
 
   return (
     <div id="space-availability-board">
@@ -77,7 +81,7 @@ export const SpaceAvailabilityBoard = () => {
             </TableRow>
           </TableHead>
           {/* Replace dummyData with data from state */}
-          <TableBody>{formatAvailabilityData(dummyData)}</TableBody>
+          <TableBody>{formatAvailabilityData(availabilityData)}</TableBody>
         </Table>
       </SpaceAvailabilityContext.Provider>
     </div>

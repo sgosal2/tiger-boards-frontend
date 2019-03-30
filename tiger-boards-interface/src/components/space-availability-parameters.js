@@ -15,8 +15,6 @@ export const SpaceAvailabilityParameters = ({ disabled }) => {
     dispatch
   } = useContext(SpaceAvailabilityContext);
 
-  console.log(disabled);
-
   return (
     <div id="space-availability-parameters">
       <FormControl className="space-availability-parameter-formcontrol">

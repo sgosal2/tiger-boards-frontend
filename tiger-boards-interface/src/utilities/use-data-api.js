@@ -17,6 +17,7 @@ const useDataApi = (initialUrl, initialData = {}) => {
 
         setData(result.data);
       } catch (error) {
+        console.log(error);
         setIsError(true);
       }
 
