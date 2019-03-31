@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Typography, Paper } from "@material-ui/core";
@@ -7,6 +7,7 @@ import "./scss/main.scss";
 // import SpaceAvailabilityBoard from "./components/space-availability-board";
 import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
 import { LoginDialog } from "./components/login-dialog";
+import Header from "./components/header";
 
 const theme = createMuiTheme({
   palette: {
@@ -26,10 +27,15 @@ const theme = createMuiTheme({
 const spaceAvailabilityBoard = React.lazy(() =>
   import("./components/space-availability-board")
 );
+const adminView = React.lazy(() => import("./components/admin-view"));
 const noMatch = React.lazy(() => import("./components/no-match"));
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
+
+  useEffect(() => {
+    console.log(window.location.pathname);
+  }, [window.location.pathname]);
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -42,17 +48,13 @@ const App = () => {
           />
 
           <div id="app-content-section">
-            {/* TODO: Change this to get current section title from state */}
-            <Typography align="left" variant="h2" id="view-header-text">
-              Space Availability
-            </Typography>
+            <Header />
 
             <Paper id="app-content">
-              {/* TODO: ReactRouter will go here */}
-              {/* <SpaceAvailabilityBoard /> */}
               <Suspense fallback={<h1>Loading..</h1>}>
                 <Switch>
                   <Route exact path="/" component={spaceAvailabilityBoard} />
+                  <Route exact path="/admin/" component={adminView} />
                   <Route component={noMatch} />
                 </Switch>
               </Suspense>

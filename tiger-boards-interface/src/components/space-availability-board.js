@@ -66,7 +66,6 @@ export const SpaceAvailabilityBoard = () => {
 
   // const availabilityData = isError ? dummyData : data;
   const availabilityData = dummyData;
-  console.log(availabilityData);
 
   return (
     <div id="space-availability-board">
