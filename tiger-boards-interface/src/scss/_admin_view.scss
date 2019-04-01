@@ -1,10 +1,18 @@
 #building-manager {
-  padding: 1rem 2rem 2rem 2rem;
   max-width: 520px;
   margin-top: 0;
   margin-bottom: 32px;
+  padding: 1rem;
 }
 
 #building-list {
   max-width: 480px;
+}
+
+#edit-building-content {
+  padding: 2rem;
+}
+
+#edit-building-header {
+  margin-top: 2rem;
 }

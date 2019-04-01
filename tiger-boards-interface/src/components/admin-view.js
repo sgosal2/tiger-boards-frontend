@@ -6,15 +6,11 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
   Button,
-  Card,
-  CardActionArea,
   CardContent,
   CardActions
 } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { Link } from "react-router-dom";
 
 // Don't use this.
 const dummyBuildings = ["Chambers", "Anderson", "Khoury"];
@@ -30,9 +26,14 @@ const BuildingManager = () => {
         </Typography>
         <List id="building-list">
           {buildings.map(building => (
-            <ListItem key={building} dense button>
-              <ListItemText primary={building} />
-            </ListItem>
+            <Link
+              to={`/admin/editbuilding/${building}`}
+              className="unstyled-link"
+            >
+              <ListItem key={building} dense button>
+                <ListItemText primary={building} />
+              </ListItem>
+            </Link>
           ))}
         </List>
       </CardContent>
