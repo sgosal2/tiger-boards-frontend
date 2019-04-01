@@ -12,7 +12,8 @@ import {
 import { Link } from "react-router-dom";
 
 const EditBuilding = props => {
-  const spaces = ["114", "113"];
+  // const spaces = ["114", "113"];
+  const spaces = [];
 
   // Need to change this cuz url parameter is eventually gonna be buildingID
   let buildingName = props.match.params.name;
@@ -33,13 +34,20 @@ const EditBuilding = props => {
             Select a space to edit its details and availability.
           </Typography>
           <List id="building-list">
-            {spaces.map(space => (
-              <Link to={`/admin/editspace/${space}`} className="unstyled-link">
-                <ListItem key={space} dense button>
-                  <ListItemText primary={space} />
-                </ListItem>
-              </Link>
-            ))}
+            {spaces.length > 0 ? (
+              spaces.map(space => (
+                <Link
+                  to={`/admin/editspace/${space}`}
+                  className="unstyled-link"
+                >
+                  <ListItem key={space} dense button>
+                    <ListItemText primary={space} />
+                  </ListItem>
+                </Link>
+              ))
+            ) : (
+              <>There are currently no spaces in this building.</>
+            )}
           </List>
         </CardContent>
         <CardActions>
