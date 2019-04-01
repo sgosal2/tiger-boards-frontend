@@ -8,7 +8,11 @@ import {
   ListItemText,
   ListItemSecondaryAction,
   IconButton,
-  Button
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardActions
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 
@@ -20,24 +24,23 @@ const BuildingManager = () => {
 
   return (
     <div id="building-manager">
-      <Typography align="left" variant="h6">
-        Buildings
-      </Typography>
-      <List id="building-list">
-        {buildings.map(building => (
-          <ListItem key={building} dense button>
-            <ListItemText primary={building} />
-            <ListItemSecondaryAction>
-              <IconButton aria-label="Delete">
-                <DeleteIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
-      <Button color="primary" id="add-new-building-btn">
-        Add New Building
-      </Button>
+      <CardContent>
+        <Typography align="left" variant="h6">
+          Select a building to edit its details and spaces.
+        </Typography>
+        <List id="building-list">
+          {buildings.map(building => (
+            <ListItem key={building} dense button>
+              <ListItemText primary={building} />
+            </ListItem>
+          ))}
+        </List>
+      </CardContent>
+      <CardActions>
+        <Button color="primary" id="add-new-building-btn">
+          Add New Building
+        </Button>
+      </CardActions>
     </div>
   );
 };
