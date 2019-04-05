@@ -4,12 +4,9 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Typography, Paper } from "@material-ui/core";
 
 import "./scss/main.scss";
-<<<<<<< HEAD:src/App.js
 import { AdminPage } from "./components/admin-page";
 import SpaceAvailabilityBoard from "./components/space-availability-board";
-=======
 // import SpaceAvailabilityBoard from "./components/space-availability-board";
->>>>>>> fec02040308c3692e9a5632c2cda03ba338da394:tiger-boards-interface/src/App.js
 import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
 import { LoginDialog } from "./components/login-dialog";
 import Header from "./components/header";
@@ -46,26 +43,6 @@ const App = () => {
 
   return (
     <MuiThemeProvider theme={theme}>
-<<<<<<< HEAD:src/App.js
-      <div className="App">
-        <TigerBoardsAppBar handleLoginClick={() => setShowLogin(true)} />
-        <LoginDialog
-          isOpen={showLogin}
-          handleClose={() => setShowLogin(false)}
-        />
-
-        <div id="app-content-section">
-          {/* TODO: Change this to get current section title from state */}
-          <Typography align="left" variant="h2" id="view-header-text">
-            Space Availability
-          </Typography>
-
-          <Paper id="app-content">
-            {/* TODO: ReactRouter will go here */}
-            {/* <SpaceAvailabilityBoard /> */}
-            <AdminPage />
-          </Paper>
-=======
       <Router>
         <div className="App">
           <TigerBoardsAppBar handleLoginClick={() => setShowLogin(true)} />
@@ -92,7 +69,6 @@ const App = () => {
               </Suspense>
             </Paper>
           </div>
->>>>>>> fec02040308c3692e9a5632c2cda03ba338da394:tiger-boards-interface/src/App.js
         </div>
       </Router>
     </MuiThemeProvider>
