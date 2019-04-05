@@ -19,7 +19,12 @@ export const SystemAdminList = admins => {
       <ListItem>
         <ListItemText primary={admins.admins[admin]} />
         <ListItemSecondaryAction>
-          <Button color="primary">Remove</Button>
+          <Button
+            color="primary"
+            onClick={() => handleAdminRemove(admins.admins[admin])}
+          >
+            Remove
+          </Button>
         </ListItemSecondaryAction>
       </ListItem>
     );
