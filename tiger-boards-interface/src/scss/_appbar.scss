@@ -1,3 +1,13 @@
 #appbar-text {
   flex-grow: 1;
 }
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+}
+
+.nav-link-active {
+  border-width: 0 0 2px 0;
+  border-style: solid;
+}
