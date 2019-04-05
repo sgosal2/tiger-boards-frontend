@@ -3,6 +3,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Typography, Paper } from "@material-ui/core";
 
 import "./scss/main.scss";
+import { AdminPage } from "./components/admin-page";
 import SpaceAvailabilityBoard from "./components/space-availability-board";
 import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
 import { LoginDialog } from "./components/login-dialog";
@@ -41,7 +42,8 @@ const App = () => {
 
           <Paper id="app-content">
             {/* TODO: ReactRouter will go here */}
-            <SpaceAvailabilityBoard />
+            {/* <SpaceAvailabilityBoard /> */}
+            <AdminPage />
           </Paper>
         </div>
       </div>
