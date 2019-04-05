@@ -18,7 +18,6 @@ const AdminView = () => {
         <Tab label="Manage Spaces" />
         <Tab label="Manage Admins" />
       </Tabs>
-      {/* <BuildingManager /> */}
       {currTab === 0 && <BuildingManager />}
       {currTab === 1 && <SystemAdminManagerView />}
     </div>

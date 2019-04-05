@@ -26,11 +26,7 @@ export const AddSystemAdminForm = () => {
           required
           onChange={e => setEmailToAdd(e.target.value)}
         />
-        <Button
-          variant="contained"
-          color="primary"
-          id="addSystemAdminSubmitButton"
-        >
+        <Button color="primary" id="addSystemAdminSubmitButton">
           Add
         </Button>
       </FormControl>
