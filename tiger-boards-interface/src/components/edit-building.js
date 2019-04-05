@@ -51,9 +51,11 @@ const EditBuilding = props => {
           </List>
         </CardContent>
         <CardActions>
-          <Button color="primary" id="add-new-building-btn">
-            Add New Space
-          </Button>
+          <Link to={`/admin/editspace/newspace`} className="unstyled-link">
+            <Button color="primary" id="add-new-building-btn">
+              Add New Space
+            </Button>
+          </Link>
           <Button color="primary" id="add-new-building-btn">
             Delete this Building
           </Button>

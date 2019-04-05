@@ -30,6 +30,7 @@ const spaceAvailabilityBoard = React.lazy(() =>
 const adminView = React.lazy(() => import("./components/admin-view"));
 const noMatch = React.lazy(() => import("./components/no-match"));
 const editBuilding = React.lazy(() => import("./components/edit-building"));
+const editSpace = React.lazy(() => import("./components/edit-space"));
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -60,6 +61,7 @@ const App = () => {
                     path="/admin/editbuilding/:name"
                     component={editBuilding}
                   />
+                  <Route path="/admin/editspace/:name" component={editSpace} />
                   <Route component={noMatch} />
                 </Switch>
               </Suspense>
