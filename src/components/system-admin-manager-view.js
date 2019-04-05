@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core";
 import AddSystemAdminForm from "./add-system-admin-form";
 import SystemAdminList from "./system-admin-list";
 
-export const AdminPage = () => {
+export const SystemAdminManagerView = () => {
   let admins = ["Max", "Sahib", "Nate"];
   return (
     <div>

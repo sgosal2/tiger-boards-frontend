@@ -4,8 +4,7 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Typography, Paper } from "@material-ui/core";
 
 import "./scss/main.scss";
-import { AdminPage } from "./components/admin-page";
-import SpaceAvailabilityBoard from "./components/space-availability-board";
+import { SystemAdminManagerView } from "./components/system-admin-manager-view";
 // import SpaceAvailabilityBoard from "./components/space-availability-board";
 import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
 import { LoginDialog } from "./components/login-dialog";
