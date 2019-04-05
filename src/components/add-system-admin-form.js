@@ -8,7 +8,7 @@ import {
   Typography
 } from "@material-ui/core";
 
-let addSystemAdmin = admin => {
+const addSystemAdmin = admin => {
   alert(admin);
 };
 
@@ -26,7 +26,11 @@ export const AddSystemAdminForm = () => {
           required
           onChange={e => setEmailToAdd(e.target.value)}
         />
-        <Button color="primary" id="addSystemAdminSubmitButton">
+        <Button
+          color="primary"
+          id="addSystemAdminSubmitButton"
+          onClick={() => addSystemAdmin(emailToAdd)}
+        >
           Add
         </Button>
       </FormControl>
