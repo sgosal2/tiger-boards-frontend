@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Typography,
   List,
@@ -9,13 +9,18 @@ import {
   CardActions
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { AdminViewContext } from "./admin-view";
 
 // Don't use this.
 const dummyBuildings = ["Chambers", "Anderson", "Khoury"];
 
 const BuildingManager = () => {
-  const buildings = dummyBuildings;
   // const buildings = [];
+  const buildings = dummyBuildings;
+  const { dispatch } = useContext(AdminViewContext);
+
+  const buildingSelectHandler = buildingID =>
+    dispatch({ type: "change-currbuildingid", value: buildingID });
 
   return (
     <div id="building-manager">
@@ -27,10 +32,16 @@ const BuildingManager = () => {
           {buildings.length > 0 ? (
             buildings.map(building => (
               <Link
+                key={building}
                 to={`/admin/editbuilding/${building}`}
                 className="unstyled-link"
               >
-                <ListItem key={building} dense button>
+                <ListItem
+                  key={building}
+                  onClick={() => buildingSelectHandler(building)}
+                  dense
+                  button
+                >
                   <ListItemText primary={building} />
                 </ListItem>
               </Link>

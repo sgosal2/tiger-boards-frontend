@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   TextField,
   Typography,
@@ -7,20 +7,25 @@ import {
   ListItemText,
   Button,
   CardContent,
-  CardActions
+  Toolbar
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { AdminViewContext } from "./admin-view";
 
 const EditBuilding = props => {
-  // const spaces = ["114", "113"];
-  const spaces = [];
+  const spaces = ["114", "113"];
+  // const spaces = [];
+  const { dispatch } = useContext(AdminViewContext);
 
   // Need to change this cuz url parameter is eventually gonna be buildingID
   let buildingName = props.match.params.name;
   buildingName = buildingName === "newbuilding" ? "New Building" : buildingName;
 
+  const spaceSelectHandler = spaceID =>
+    dispatch({ type: "change-currspaceid", value: spaceID });
+
   return (
-    <form id="edit-building-content" noValidate autoComplete="off">
+    <form className="edit-form-content" noValidate autoComplete="off">
       <div id="building-manager">
         <CardContent>
           <TextField
@@ -31,16 +36,23 @@ const EditBuilding = props => {
             fullWidth
           />
           <Typography align="left" variant="h6" id="edit-building-header">
-            Select a space to edit its details and availability.
+            Spaces
           </Typography>
           <List id="building-list">
             {spaces.length > 0 ? (
               spaces.map(space => (
                 <Link
+                  key={space}
                   to={`/admin/editspace/${space}`}
                   className="unstyled-link"
                 >
-                  <ListItem key={space} dense button>
+                  <ListItem
+                    onClick={() => spaceSelectHandler(space)}
+                    key={space}
+                    dense
+                    button
+                    className="edit-form-list-item"
+                  >
                     <ListItemText primary={space} />
                   </ListItem>
                 </Link>
@@ -50,16 +62,23 @@ const EditBuilding = props => {
             )}
           </List>
         </CardContent>
-        <CardActions>
+        <Toolbar>
           <Link to={`/admin/editspace/newspace`} className="unstyled-link">
-            <Button color="primary" id="add-new-building-btn">
-              Add New Space
+            <Button color="primary">Add New Space</Button>
+          </Link>
+          <Button color="primary">Delete this Building</Button>
+
+          <div className="spacer" />
+
+          <Link to={`/admin/`} className="unstyled-link">
+            <Button size="small" noWrap color="primary">
+              Save and Return
             </Button>
           </Link>
-          <Button color="primary" id="add-new-building-btn">
-            Delete this Building
+          <Button noWrap color="primary">
+            Save
           </Button>
-        </CardActions>
+        </Toolbar>
       </div>
     </form>
   );
