@@ -11,6 +11,7 @@ const initialState = {
 
 const buildingManager = React.lazy(() => import("./building-manager"));
 const editBuilding = React.lazy(() => import("./edit-building"));
+const editEvent = React.lazy(() => import("./edit-event"));
 const editSpace = React.lazy(() => import("./edit-space"));
 
 export const AdminViewContext = React.createContext();
@@ -37,6 +38,7 @@ const AdminView = () => {
           <Route exact path="/admin/" component={buildingManager} />
           <Route path="/admin/editbuilding/:name" component={editBuilding} />
           <Route path="/admin/editspace/:name" component={editSpace} />
+          <Route path="/admin/editevent/:name" component={editEvent} />
         </Switch>
       </AdminViewContext.Provider>
     </div>

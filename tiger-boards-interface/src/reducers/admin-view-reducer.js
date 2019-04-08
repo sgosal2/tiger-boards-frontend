@@ -10,7 +10,7 @@ const adminViewReducer = (state, action) => {
       return { ...state, currBuildingID: action.value };
     case "change-curreventid":
       return { ...state, currEventID: action.value };
-    case "change-currspace":
+    case "change-currspaceid":
       return { ...state, currSpaceID: action.value };
     default:
       return state;
