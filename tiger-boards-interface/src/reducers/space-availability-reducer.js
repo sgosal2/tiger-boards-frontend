@@ -1,5 +1,3 @@
-import axios from "axios";
-
 const spaceAvailabilityReducer = (state, action) => {
   switch (action.type) {
     case "change-building":
