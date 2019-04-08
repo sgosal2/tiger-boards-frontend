@@ -3,8 +3,9 @@ import { Grid } from "@material-ui/core";
 import AddSystemAdminForm from "./add-system-admin-form";
 import SystemAdminList from "./system-admin-list";
 
+let admins = ["Max", "Sahib", "Nate"];
+
 export const SystemAdminManagerView = () => {
-  let admins = ["Max", "Sahib", "Nate"];
   return (
     <div>
       <Grid container spacing={24}>
