@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextField,
   Typography,
@@ -18,8 +18,10 @@ const EditBuilding = props => {
   const { dispatch } = useContext(AdminViewContext);
 
   // Need to change this cuz url parameter is eventually gonna be buildingID
-  let buildingName = props.match.params.name;
-  buildingName = buildingName === "newbuilding" ? "New Building" : buildingName;
+  let buildingNameFromID = props.match.params.name;
+  buildingNameFromID =
+    buildingNameFromID === "newbuilding" ? "New Building" : buildingNameFromID;
+  const [buildingName, setBuildingName] = useState(buildingNameFromID);
 
   const spaceSelectHandler = spaceID =>
     dispatch({ type: "change-currspaceid", value: spaceID });
@@ -33,6 +35,7 @@ const EditBuilding = props => {
             label="Building Name"
             margin="normal"
             value={buildingName}
+            onChange={event => setBuildingName(event.target.value)}
             fullWidth
           />
           <Typography align="left" variant="h6" id="edit-building-header">
