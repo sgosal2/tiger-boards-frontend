@@ -157,7 +157,11 @@ const EditEvent = props => {
           <div className="spacer" />
 
           <Link
-            to={`/admin/editspace/${currSpaceID}`}
+            to={
+              currSpaceID.length > 0
+                ? `/admin/editspace/${currSpaceID}`
+                : "/admin/"
+            }
             className="unstyled-link"
           >
             <Button className="right-btn" color="primary">
