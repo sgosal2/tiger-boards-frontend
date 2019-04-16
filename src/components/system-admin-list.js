@@ -13,27 +13,26 @@ let handleAdminRemove = admin => {
 };
 
 export const SystemAdminList = admins => {
-  let listItems = [];
-  for (let admin in admins.admins) {
-    listItems.push(
-      <ListItem>
-        <ListItemText primary={admins.admins[admin]} />
-        <ListItemSecondaryAction>
-          <Button
-            color="primary"
-            onClick={() => handleAdminRemove(admins.admins[admin])}
-          >
-            Remove
-          </Button>
-        </ListItemSecondaryAction>
-      </ListItem>
-    );
-  }
-
   return (
     <div>
       <Typography variant="h6">System Administrators</Typography>
-      <List>{listItems}</List>
+      <List>
+        {admins.admins.map(admin => {
+          return (
+            <ListItem>
+              <ListItemText primary={admin} />
+              <ListItemSecondaryAction>
+                <Button
+                  color="primary"
+                  onClick={() => handleAdminRemove(admin)}
+                >
+                  Remove
+                </Button>
+              </ListItemSecondaryAction>
+            </ListItem>
+          );
+        })}
+      </List>
     </div>
   );
 };
