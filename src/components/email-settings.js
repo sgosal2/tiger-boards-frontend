@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { Button, Checkbox, FormControl, Typography } from "@material-ui/core";
 
+const updateEmailSettings = (emailDaily, emailWeekly) => {
+  alert(emailDaily);
+  alert(emailWeekly);
+};
+
 export const EmailSettings = userEmail => {
   const [emailDaily, setEmailDaily] = useState(false);
   const [emailWeekly, setEmailWeekly] = useState(false);
@@ -19,7 +24,13 @@ export const EmailSettings = userEmail => {
           id="emailWeekly"
           onChange={e => setEmailWeekly(e.target.checked)}
         />
-        <Button color="primary" id="updateEmailPreferences">
+        <Button
+          color="primary"
+          id="updateEmailPreferences"
+          onClick={(emailDaily, emailWeekly) =>
+            updateEmailSettings(emailDaily, emailWeekly)
+          }
+        >
           Update email preferences
         </Button>
       </FormControl>
