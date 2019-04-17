@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { AdminViewContext } from "./admin-view";
 
 const EditSpace = props => {
+  const [spaceID, setSpaceID] = useState("123456");
   // Need to change this cuz url parameter is eventually gonna be spaceID
   let spaceNameFromID = props.match.params.name;
   spaceNameFromID =
@@ -35,6 +36,14 @@ const EditSpace = props => {
     <form className="edit-form-content" noValidate autoComplete="off">
       <div id="space-manager">
         <CardContent>
+          <TextField
+            id="edit-space-id"
+            label="Space ID"
+            margin="normal"
+            value={spaceID}
+            onChange={event => setSpaceID(event.target.value)}
+            fullWidth
+          />
           <TextField
             id="edit-space-name"
             label="Space Name"

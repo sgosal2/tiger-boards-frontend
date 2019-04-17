@@ -17,6 +17,7 @@ const EditBuilding = props => {
   // const spaces = [];
   const { dispatch } = useContext(AdminViewContext);
 
+  const [buildingID, setBuildingID] = useState("12345");
   // Need to change this cuz url parameter is eventually gonna be buildingID
   let buildingNameFromID = props.match.params.name;
   buildingNameFromID =
@@ -30,6 +31,14 @@ const EditBuilding = props => {
     <form className="edit-form-content" noValidate autoComplete="off">
       <div id="building-manager">
         <CardContent>
+          <TextField
+            id="edit-building-id"
+            label="Building ID"
+            margin="normal"
+            value={buildingID}
+            onChange={event => setBuildingID(event.target.value)}
+            fullWidth
+          />
           <TextField
             id="edit-building-name"
             label="Building Name"
