@@ -1,3 +1,5 @@
+@import "./add_system_admin_form";
+@import "./admin_view";
 @import "./appbar";
 @import "./space_availability_board";
 
@@ -19,4 +21,12 @@
 #view-header-text {
   margin-top: 1rem;
   cursor: default;
+}
+
+#no-match-content {
+  padding: 15vh 0 15vh 0;
+}
+
+.unstyled-link {
+  text-decoration: none;
 }
