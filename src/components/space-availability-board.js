@@ -1,5 +1,10 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   Table,
   TableHead,
   TableRow,
@@ -30,22 +35,47 @@ const dummyData = [
   }
 ];
 
-const formatAvailabilityData = availabilityData =>
-  availabilityData.map(data => {
+const dummySpaceDetailData = {
+  capacity: 25,
+  features: ["Whiteboard", "Projector"]
+};
+
+const formatAvailabilityData = (
+  availabilityData,
+  spaceDetailData,
+  modalOpen,
+  handleModalOpen,
+  handleModalClose
+) => {
+  return availabilityData.map(data => {
     return (
       <TableRow hover key={data.space_id}>
-        <TableCell
-          className="space-id-cell"
-          onClick={() => alert(data.space_id)}
-        >
+        <TableCell className="space-id-cell" onClick={handleModalOpen}>
           {data.space_id}
         </TableCell>
+        <Dialog
+          open={modalOpen}
+          onClose={handleModalClose}
+          aria-labelledby="space-details-dialog-title"
+        >
+          <DialogTitle id="login-dialog-title">{data.space_id}</DialogTitle>
+          <DialogContent>Capacity: {spaceDetailData.capacity}</DialogContent>
+          <DialogContent>
+            {spaceDetailData.features.map(feature => {
+              return <DialogContent>{feature}</DialogContent>;
+            })}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleModalClose}>Close</Button>
+          </DialogActions>
+        </Dialog>
         <TableCell>
           {data.is_available ? "Available" : "Not Available"}
         </TableCell>
       </TableRow>
     );
   });
+};
 
 const initialState = {
   building: config.DEFAULT_BUILDING,
@@ -59,6 +89,10 @@ export const SpaceAvailabilityBoard = () => {
 
   const urlParams = `?datetime=${state.datetime}&building=${state.building}`;
   const url = `${config.API_SPACES}${urlParams}`;
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
 
   useEffect(() => {
     doFetch(url);
@@ -80,7 +114,15 @@ export const SpaceAvailabilityBoard = () => {
             </TableRow>
           </TableHead>
           {/* Replace dummyData with data from state */}
-          <TableBody>{formatAvailabilityData(availabilityData)}</TableBody>
+          <TableBody>
+            {formatAvailabilityData(
+              availabilityData,
+              dummySpaceDetailData,
+              modalOpen,
+              handleModalOpen,
+              handleModalClose
+            )}
+          </TableBody>
         </Table>
       </SpaceAvailabilityContext.Provider>
     </div>
