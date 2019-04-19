@@ -12,22 +12,22 @@ import {
 import { Link } from "react-router-dom";
 import { AdminViewContext } from "./admin-view";
 
-const EditSpace = props => {
-  const [spaceID, setSpaceID] = useState("123456");
-  // Need to change this cuz url parameter is eventually gonna be spaceID
-  let spaceNameFromID = props.match.params.name;
-  spaceNameFromID =
-    spaceNameFromID === "newspace" ? "New Space" : spaceNameFromID;
-
-  const [spaceName, setSpaceName] = useState(spaceNameFromID);
-  const [spaceFeatures, setSpaceFeatures] = useState("Projector, Whiteboard");
-  const [spaceCapacity, setSpaceCapacity] = useState(25);
-
-  const events = ["COMP 51", "COMP 53"];
+const EditSpace = () => {
   const {
-    state: { currBuildingID },
+    state: {
+      currBuildingData: { building_id },
+      currSpaceData: { space_id, name, capacity, features }
+    },
     dispatch
   } = useContext(AdminViewContext);
+  const [spaceID, setSpaceID] = useState(space_id);
+  const [spaceName, setSpaceName] = useState(name);
+  const [spaceFeatures, setSpaceFeatures] = useState(
+    features ? features.join(", ") : ""
+  );
+  const [spaceCapacity, setSpaceCapacity] = useState(capacity);
+
+  const events = ["COMP 51", "COMP 53"];
 
   const eventSelectHandler = eventID =>
     dispatch({ type: "change-curreventid", value: eventID });
@@ -106,8 +106,8 @@ const EditSpace = props => {
 
           <Link
             to={
-              currBuildingID.length > 0
-                ? `/admin/editbuilding/${currBuildingID}`
+              building_id && building_id.length > 0
+                ? `/admin/editbuilding/${building_id}`
                 : "/admin/"
             }
             className="unstyled-link"
