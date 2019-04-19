@@ -9,13 +9,14 @@ import {
   CardActions
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+
 import { AdminViewContext } from "./admin-view";
+import useDataApi from "../../utilities/use-data-api";
 
 // Don't use this.
 const dummyBuildings = ["Chambers", "Anderson", "Khoury"];
 
 const BuildingManager = () => {
-  // const buildings = [];
   const buildings = dummyBuildings;
   const { dispatch } = useContext(AdminViewContext);
 

@@ -4,6 +4,8 @@ const spaceAvailabilityReducer = (state, action) => {
       return { ...state, building: action.value };
     case "change-datetime":
       return { ...state, datetime: action.value };
+    case "change-data":
+      return { ...state, data: action.value };
     default:
       return state;
   }

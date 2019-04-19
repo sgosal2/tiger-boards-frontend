@@ -14,22 +14,6 @@ import config from "../config.json";
 
 export const SpaceAvailabilityContext = React.createContext();
 
-// Don't use this.
-const dummyData = [
-  {
-    space_id: "CTC 113",
-    is_available: true
-  },
-  {
-    space_id: "CTC 114",
-    is_available: false
-  },
-  {
-    space_id: "CTC 115",
-    is_available: true
-  }
-];
-
 const formatAvailabilityData = availabilityData =>
   availabilityData.map(data => {
     return (
@@ -38,10 +22,11 @@ const formatAvailabilityData = availabilityData =>
           className="space-id-cell"
           onClick={() => alert(data.space_id)}
         >
-          {data.space_id}
+          {data.name}
         </TableCell>
         <TableCell>
-          {data.is_available ? "Available" : "Not Available"}
+          {/* TODO: waiting for availability data from api */}
+          Available
         </TableCell>
       </TableRow>
     );
@@ -50,22 +35,25 @@ const formatAvailabilityData = availabilityData =>
 const initialState = {
   building: config.DEFAULT_BUILDING,
   datetime: currentDateTime(),
-  data: {}
+  data: []
 };
 
 export const SpaceAvailabilityBoard = () => {
   const [state, dispatch] = useReducer(spaceAvailabilityReducer, initialState);
-  const { data, isLoading, isError, doFetch } = useDataApi([]);
+  const { data, isLoading, isError, doFetch } = useDataApi({});
 
-  const urlParams = `?datetime=${state.datetime}&building=${state.building}`;
+  const urlParams = `?building_id=${state.building}`;
   const url = `${config.API_SPACES}${urlParams}`;
 
   useEffect(() => {
     doFetch(url);
   }, [url]);
 
-  // const availabilityData = isError ? dummyData : data;
-  const availabilityData = dummyData;
+  useEffect(() => {
+    if (!isError || !isLoading) {
+      dispatch({ type: "change-data", value: data });
+    }
+  }, [data]);
 
   return (
     <div id="space-availability-board">
@@ -79,8 +67,7 @@ export const SpaceAvailabilityBoard = () => {
               <TableCell>Availability</TableCell>
             </TableRow>
           </TableHead>
-          {/* Replace dummyData with data from state */}
-          <TableBody>{formatAvailabilityData(availabilityData)}</TableBody>
+          <TableBody>{formatAvailabilityData(state.data)}</TableBody>
         </Table>
       </SpaceAvailabilityContext.Provider>
     </div>

@@ -1,4 +1,4 @@
 {
-  "API_SPACES": "http://localhost:5000/api/spaces",
-  "DEFAULT_BUILDING": "Chambers"
+  "API_SPACES": "http://localhost:5000/spaces/",
+  "DEFAULT_BUILDING": "CTC"
 }
