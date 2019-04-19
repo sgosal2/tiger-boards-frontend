@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer, useEffect, Suspense } from "react";
 import {
   Table,
   TableHead,
@@ -7,30 +7,13 @@ import {
   TableBody
 } from "@material-ui/core";
 import { SpaceAvailabilityParameters } from "./space-availability-parameters";
-import currentDateTime from "../utilities/current-date-time";
-import spaceAvailabilityReducer from "../reducers/space-availability-reducer";
-import useDataApi from "../utilities/use-data-api";
-import config from "../config.json";
+import currentDateTime from "../../utilities/current-date-time";
+import spaceAvailabilityReducer from "../../reducers/space-availability-reducer";
+import useDataApi from "../../utilities/use-data-api";
+import config from "../../config.json";
+import SpaceAvailabilityBody from "./space-availability-body";
 
 export const SpaceAvailabilityContext = React.createContext();
-
-const formatAvailabilityData = availabilityData =>
-  availabilityData.map(data => {
-    return (
-      <TableRow hover key={data.space_id}>
-        <TableCell
-          className="space-id-cell"
-          onClick={() => alert(data.space_id)}
-        >
-          {data.name}
-        </TableCell>
-        <TableCell>
-          {/* TODO: waiting for availability data from api */}
-          Available
-        </TableCell>
-      </TableRow>
-    );
-  });
 
 const initialState = {
   building: config.DEFAULT_BUILDING,
@@ -67,7 +50,9 @@ export const SpaceAvailabilityBoard = () => {
               <TableCell>Availability</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>{formatAvailabilityData(state.data)}</TableBody>
+          <TableBody>
+            <SpaceAvailabilityBody availabilityData={state.data} />
+          </TableBody>
         </Table>
       </SpaceAvailabilityContext.Provider>
     </div>

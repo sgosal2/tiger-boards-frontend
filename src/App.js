@@ -24,7 +24,7 @@ const theme = createMuiTheme({
 
 // Lazy load route components
 const spaceAvailabilityBoard = React.lazy(() =>
-  import("./components/space-availability-board")
+  import("./components/space-availability/space-availability-board")
 );
 const adminView = React.lazy(() =>
   import("./components/admin-view/admin-view")
