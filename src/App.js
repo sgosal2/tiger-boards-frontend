@@ -4,7 +4,6 @@ import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 
 import "./scss/main.scss";
-// import SpaceAvailabilityBoard from "./components/space-availability-board";
 import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
 import { LoginDialog } from "./components/login-dialog";
 import Header from "./components/header";
