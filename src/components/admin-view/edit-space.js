@@ -9,7 +9,7 @@ import {
   CardContent,
   CardActions
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { AdminViewContext } from "./admin-view";
 
 const EditSpace = () => {
@@ -32,7 +32,7 @@ const EditSpace = () => {
   const eventSelectHandler = eventID =>
     dispatch({ type: "change-curreventid", value: eventID });
 
-  return (
+  return building_id && space_id ? (
     <form className="edit-form-content" noValidate autoComplete="off">
       <div id="space-manager">
         <CardContent>
@@ -120,6 +120,8 @@ const EditSpace = () => {
         </CardActions>
       </div>
     </form>
+  ) : (
+    <Redirect to="/admin/" />
   );
 };
 

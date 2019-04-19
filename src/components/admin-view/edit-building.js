@@ -9,7 +9,7 @@ import {
   CardContent,
   Toolbar
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import { AdminViewContext } from "./admin-view";
 import useDataApi from "../../utilities/use-data-api";
@@ -32,7 +32,7 @@ const EditBuilding = () => {
   const spaceSelectHandler = spaceData =>
     dispatch({ type: "change-curr-space-data", value: spaceData });
 
-  return (
+  return building_id ? (
     <form className="edit-form-content" noValidate autoComplete="off">
       <div id="building-manager">
         <CardContent>
@@ -98,6 +98,8 @@ const EditBuilding = () => {
         </Toolbar>
       </div>
     </form>
+  ) : (
+    <Redirect to="/admin/" />
   );
 };
 
