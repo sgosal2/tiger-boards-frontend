@@ -31,10 +31,10 @@ export const SpaceAvailabilityParameters = ({ disabled }) => {
         >
           {/* TODO: Create a generator to generate these menuitems from data in
            state. Do not leave these here. */}
-          <MenuItem value="Chambers">Chambers</MenuItem>
-          <MenuItem value="Anderson">Anderson</MenuItem>
-          <MenuItem value="Khoury">Khoury</MenuItem>
-          <MenuItem value="Baun">Baun</MenuItem>
+          <MenuItem value="CTC">Chambers</MenuItem>
+          <MenuItem value="AH">Anderson</MenuItem>
+          <MenuItem value="KH">Khoury</MenuItem>
+          <MenuItem value="BH">Baun</MenuItem>
         </Select>
       </FormControl>
       <FormControl className="space-availability-parameter-formcontrol">

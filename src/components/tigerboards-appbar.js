@@ -19,6 +19,7 @@ const formatNavLinks = navLinks =>
     return (
       <NavLink
         to={link.to}
+        key={link.text}
         activeClassName="nav-link-active"
         className="nav-link"
       >
