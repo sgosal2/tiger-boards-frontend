@@ -6,12 +6,8 @@ const adminViewReducer = (state, action) => {
     action.value
   );
   switch (action.type) {
-    case "change-currbuildingid":
-      return { ...state, currBuildingID: action.value };
     case "change-curreventid":
       return { ...state, currEventID: action.value };
-    case "change-currspaceid":
-      return { ...state, currSpaceID: action.value };
     case "change-curr-building-data":
       return { ...state, currBuildingData: action.value };
     case "change-curr-event-data":
@@ -24,6 +20,13 @@ const adminViewReducer = (state, action) => {
       return { ...state, spacesData: action.value };
     case "change-events-data":
       return { ...state, eventsData: action.value };
+    case "reset-data":
+      return {
+        ...state,
+        currSpaceData: {},
+        currEventData: {},
+        currBuildingData: {}
+      };
     default:
       return state;
   }

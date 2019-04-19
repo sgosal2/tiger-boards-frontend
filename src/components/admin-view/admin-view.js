@@ -4,9 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import adminViewReducer from "../../reducers/admin-view-reducer";
 
 const initialState = {
-  currBuildingID: "",
   buildingsData: [],
-  currSpaceID: "",
   spacesData: [],
   currEventID: "",
   eventsData: [],
@@ -50,7 +48,10 @@ const AdminView = () => {
           textColor="primary"
           centered
         >
-          <Tab label="Manage Spaces" />
+          <Tab
+            label="Manage Spaces"
+            onClick={() => dispatch({ type: "reset-data" })}
+          />
           <Tab label="Manage Admins" />
         </Tabs>
 
