@@ -21,8 +21,8 @@ const BuildingManager = () => {
     dispatch
   } = useContext(AdminViewContext);
 
-  const buildingSelectHandler = buildingID =>
-    dispatch({ type: "change-currbuildingid", value: buildingID });
+  const buildingSelectHandler = buildingData =>
+    dispatch({ type: "change-curr-building-data", value: buildingData });
 
   useEffect(() => {
     if (!isError || !isLoading) {
@@ -38,19 +38,19 @@ const BuildingManager = () => {
         </Typography>
         <List id="building-list">
           {buildingsData.length > 0 ? (
-            buildingsData.map(({ building_id, building_name }) => (
+            buildingsData.map((data, { building_id, building_name }) => (
               <Link
-                key={building_id}
-                to={`/admin/editbuilding/${building_id}`}
+                key={data.building_id}
+                to={`/admin/editbuilding/${data.building_id}`}
                 className="unstyled-link"
               >
                 <ListItem
-                  key={building_id}
-                  onClick={() => buildingSelectHandler(building_id)}
+                  key={data.building_id}
+                  onClick={() => buildingSelectHandler(data)}
                   dense
                   button
                 >
-                  <ListItemText primary={building_name} />
+                  <ListItemText primary={data.building_name} />
                 </ListItem>
               </Link>
             ))

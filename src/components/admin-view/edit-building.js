@@ -10,22 +10,27 @@ import {
   Toolbar
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
+
 import { AdminViewContext } from "./admin-view";
+import useDataApi from "../../utilities/use-data-api";
+import config from "../../config.json";
 
-const EditBuilding = props => {
-  const spaces = ["114", "113"];
-  // const spaces = [];
-  const { dispatch } = useContext(AdminViewContext);
+const EditBuilding = () => {
+  const {
+    state: {
+      currBuildingData: { building_id, building_name }
+    },
+    dispatch
+  } = useContext(AdminViewContext);
+  const { data, isLoading } = useDataApi(
+    `${config.API_SPACES}?building_id=${building_id}`
+  );
 
-  const [buildingID, setBuildingID] = useState("12345");
-  // Need to change this cuz url parameter is eventually gonna be buildingID
-  let buildingNameFromID = props.match.params.name;
-  buildingNameFromID =
-    buildingNameFromID === "newbuilding" ? "New Building" : buildingNameFromID;
-  const [buildingName, setBuildingName] = useState(buildingNameFromID);
+  const [buildingID, setBuildingID] = useState(building_id);
+  const [buildingName, setBuildingName] = useState(building_name);
 
-  const spaceSelectHandler = spaceID =>
-    dispatch({ type: "change-currspaceid", value: spaceID });
+  const spaceSelectHandler = spaceData =>
+    dispatch({ type: "change-curr-space-data", value: spaceData });
 
   return (
     <form className="edit-form-content" noValidate autoComplete="off">
@@ -51,24 +56,26 @@ const EditBuilding = props => {
             Spaces
           </Typography>
           <List id="building-list">
-            {spaces.length > 0 ? (
-              spaces.map(space => (
+            {data && data.length > 0 ? (
+              data.map(spaceData => (
                 <Link
-                  key={space}
-                  to={`/admin/editspace/${space}`}
+                  key={spaceData.space_id}
+                  to={`/admin/editspace/${spaceData.space_id}`}
                   className="unstyled-link"
                 >
                   <ListItem
-                    onClick={() => spaceSelectHandler(space)}
-                    key={space}
+                    onClick={() => spaceSelectHandler(spaceData)}
+                    key={spaceData.space_id}
                     dense
                     button
                     className="edit-form-list-item"
                   >
-                    <ListItemText primary={space} />
+                    <ListItemText primary={spaceData.name} />
                   </ListItem>
                 </Link>
               ))
+            ) : isLoading ? (
+              <>Loading...</>
             ) : (
               <>There are currently no spaces in this building.</>
             )}
@@ -83,13 +90,11 @@ const EditBuilding = props => {
           <div className="spacer" />
 
           <Link to={`/admin/`} className="unstyled-link">
-            <Button size="small" noWrap color="primary">
+            <Button size="small" color="primary">
               Save and Return
             </Button>
           </Link>
-          <Button noWrap color="primary">
-            Save
-          </Button>
+          <Button color="primary">Save</Button>
         </Toolbar>
       </div>
     </form>

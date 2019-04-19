@@ -9,7 +9,10 @@ const initialState = {
   currSpaceID: "",
   spacesData: [],
   currEventID: "",
-  eventsData: []
+  eventsData: [],
+  currBuildingData: {},
+  currSpaceData: {},
+  currEventData: {}
 };
 
 const buildingManager = React.lazy(() => import("./building-manager"));
