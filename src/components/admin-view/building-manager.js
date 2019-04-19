@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Typography,
   List,
@@ -10,18 +10,25 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
+import config from "../../config.json";
 import { AdminViewContext } from "./admin-view";
 import useDataApi from "../../utilities/use-data-api";
 
-// Don't use this.
-const dummyBuildings = ["Chambers", "Anderson", "Khoury"];
-
 const BuildingManager = () => {
-  const buildings = dummyBuildings;
-  const { dispatch } = useContext(AdminViewContext);
+  const { data, isLoading, isError } = useDataApi(config.API_BUILDINGS);
+  const {
+    state: { buildingsData },
+    dispatch
+  } = useContext(AdminViewContext);
 
   const buildingSelectHandler = buildingID =>
     dispatch({ type: "change-currbuildingid", value: buildingID });
+
+  useEffect(() => {
+    if (!isError || !isLoading) {
+      dispatch({ type: "change-buildings-data", value: data });
+    }
+  }, [data]);
 
   return (
     <div id="building-manager">
@@ -30,23 +37,25 @@ const BuildingManager = () => {
           Select a building to edit its details and spaces.
         </Typography>
         <List id="building-list">
-          {buildings.length > 0 ? (
-            buildings.map(building => (
+          {buildingsData.length > 0 ? (
+            buildingsData.map(({ building_id, building_name }) => (
               <Link
-                key={building}
-                to={`/admin/editbuilding/${building}`}
+                key={building_id}
+                to={`/admin/editbuilding/${building_id}`}
                 className="unstyled-link"
               >
                 <ListItem
-                  key={building}
-                  onClick={() => buildingSelectHandler(building)}
+                  key={building_id}
+                  onClick={() => buildingSelectHandler(building_id)}
                   dense
                   button
                 >
-                  <ListItemText primary={building} />
+                  <ListItemText primary={building_name} />
                 </ListItem>
               </Link>
             ))
+          ) : isLoading ? (
+            <>Loading...</>
           ) : (
             <>There are currently no buildings.</>
           )}

@@ -5,8 +5,11 @@ import adminViewReducer from "../../reducers/admin-view-reducer";
 
 const initialState = {
   currBuildingID: "",
+  buildingsData: [],
   currSpaceID: "",
-  currEventID: ""
+  spacesData: [],
+  currEventID: "",
+  eventsData: []
 };
 
 const buildingManager = React.lazy(() => import("./building-manager"));
