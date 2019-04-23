@@ -5,10 +5,10 @@ import SystemAdminList from "./system-admin-list";
 
 let admins = ["Max", "Sahib", "Nate"];
 
-export const SystemAdminManagerView = () => {
+const SystemAdminManagerView = () => {
   return (
-    <div>
-      <Grid container spacing={24}>
+    <div className="edit-form-content">
+      <Grid container>
         <Grid item xs={6}>
           <SystemAdminList admins={admins} />
         </Grid>
@@ -19,3 +19,5 @@ export const SystemAdminManagerView = () => {
     </div>
   );
 };
+
+export default SystemAdminManagerView;

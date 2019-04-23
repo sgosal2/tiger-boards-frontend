@@ -1,18 +1,40 @@
 #building-manager {
-  max-width: 520px;
   margin-top: 0;
   margin-bottom: 32px;
   padding: 1rem;
 }
 
 #building-list {
-  max-width: 480px;
+  max-width: 720px;
 }
 
-#edit-building-content {
+.edit-form-content {
   padding: 2rem;
 }
 
 #edit-building-header {
   margin-top: 2rem;
+}
+
+.right-btn {
+  float: right;
+}
+
+.edit-form-list-item {
+  padding: 0.5rem !important;
+}
+
+.edit-event-time {
+  margin-right: 1rem !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.edit-form-container {
+  text-align: left;
+}
+
+#days-picker {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
 }
