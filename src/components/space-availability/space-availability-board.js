@@ -28,11 +28,15 @@ const initialState = {
 
 export const SpaceAvailabilityBoard = () => {
   const [state, dispatch] = useReducer(spaceAvailabilityReducer, initialState);
-  const { data, isLoading, isError, doFetch } = useDataApi({});
+  // const { data, isLoading, isError, doFetch } = useDataApi({});
+  const spacesApiResponse = useDataApi({});
+  const spaceDetailsApiResponse = useDataApi({});
 
   const [modalOpen, setModalOpen] = useState(false);
   const [currentlySelectedSpace, setCurSelectedSpace] = useState("");
   const handleModalOpen = space_id => {
+    const url = `${config.API_SPACES}${space_id}`;
+    spaceDetailsApiResponse.doFetch(url);
     setCurSelectedSpace(space_id);
     setModalOpen(true);
   };
@@ -42,14 +46,18 @@ export const SpaceAvailabilityBoard = () => {
   const url = `${config.API_SPACES}${urlParams}`;
 
   useEffect(() => {
-    doFetch(url);
+    console.log(spaceDetailsApiResponse.data);
+  }, [spaceDetailsApiResponse.data]);
+
+  useEffect(() => {
+    spacesApiResponse.doFetch(url);
   }, [url]);
 
   useEffect(() => {
-    if (!isError || !isLoading) {
-      dispatch({ type: "change-data", value: data });
+    if (!spacesApiResponse.isError || !spacesApiResponse.isLoading) {
+      dispatch({ type: "change-data", value: spacesApiResponse.data });
     }
-  }, [data]);
+  }, [spacesApiResponse.data]);
 
   return (
     <div id="space-availability-board">
@@ -71,7 +79,7 @@ export const SpaceAvailabilityBoard = () => {
         </DialogActions>
       </Dialog>{" "}
       <SpaceAvailabilityContext.Provider value={{ state, dispatch }}>
-        <SpaceAvailabilityParameters disabled={isLoading} />
+        <SpaceAvailabilityParameters disabled={spacesApiResponse.isLoading} />
         <Table>
           <TableHead>
             <TableRow>
