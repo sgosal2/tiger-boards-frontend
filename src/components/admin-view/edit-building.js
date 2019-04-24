@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import axios from "axios";
 import {
   TextField,
   Typography,
@@ -31,6 +32,14 @@ const EditBuilding = () => {
 
   const spaceSelectHandler = spaceData =>
     dispatch({ type: "change-curr-space-data", value: spaceData });
+
+  const deleteHandler = async () => {
+    try {
+      await axios.delete(`${config.API_BUILDINGS}/${building_id}`);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return building_id ? (
     <form className="edit-form-content" noValidate autoComplete="off">
