@@ -44,9 +44,9 @@ export const SpaceAvailabilityParameters = ({ disabled }) => {
           type="datetime-local"
           value={datetime}
           disabled={disabled}
-          onChange={event => {
-            dispatch({ type: "change-datetime", value: event.target.value });
-          }}
+          onChange={event =>
+            dispatch({ type: "change-datetime", value: event.target.value })
+          }
           InputLabelProps={{
             shrink: true
           }}

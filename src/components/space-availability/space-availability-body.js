@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { TableRow, TableCell } from "@material-ui/core";
 
 const SpaceAvailabilityBody = ({ availabilityData, handleModalOpen }) => {
