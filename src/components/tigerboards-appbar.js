@@ -2,6 +2,7 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { Toolbar, Typography, Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
+import GoogleLogin from "./google-login";
 
 const appBarLinks = [
   {
@@ -43,9 +44,7 @@ export const TigerBoardsAppBar = ({ handleLoginClick }) => {
         {formatNavLinks(appBarLinks)}
 
         {/* TODO: Change Login text to Logout if logged in */}
-        <Button color="inherit" onClick={() => handleLoginClick()}>
-          Login
-        </Button>
+        <GoogleLogin />
       </Toolbar>
     </AppBar>
   );
