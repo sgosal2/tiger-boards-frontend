@@ -47,15 +47,17 @@ const App = () => {
           <div id="app-content-section">
             <Header />
 
-            <Paper id="app-content">
-              <Suspense fallback={<h1>Loading..</h1>}>
-                <Switch>
-                  <Route exact path="/" component={spaceAvailabilityBoard} />
-                  <Route path="/admin/" component={adminView} />
+            <Paper>
+              <div id="app-content">
+                <Suspense fallback={<h1>Loading..</h1>}>
+                  <Switch>
+                    <Route exact path="/" component={spaceAvailabilityBoard} />
+                    <Route path="/admin/" component={adminView} />
 
-                  <Route component={noMatch} />
-                </Switch>
-              </Suspense>
+                    <Route component={noMatch} />
+                  </Switch>
+                </Suspense>
+              </div>
             </Paper>
           </div>
         </div>
