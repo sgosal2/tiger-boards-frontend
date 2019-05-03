@@ -5,7 +5,6 @@ import { Paper } from "@material-ui/core";
 
 import "./scss/main.scss";
 import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
-import { LoginDialog } from "./components/login-dialog";
 import Header from "./components/header";
 
 const theme = createMuiTheme({
@@ -39,10 +38,6 @@ const App = () => {
       <Router>
         <div className="App">
           <TigerBoardsAppBar handleLoginClick={() => setShowLogin(true)} />
-          <LoginDialog
-            isOpen={showLogin}
-            handleClose={() => setShowLogin(false)}
-          />
 
           <div id="app-content-section">
             <Header />
@@ -52,7 +47,6 @@ const App = () => {
                 <Switch>
                   <Route exact path="/" component={spaceAvailabilityBoard} />
                   <Route path="/admin/" component={adminView} />
-
                   <Route component={noMatch} />
                 </Switch>
               </Suspense>
