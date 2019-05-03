@@ -8,7 +8,8 @@ import {
   FormGroup,
   FormControlLabel,
   Checkbox,
-  Switch
+  Switch,
+  Typography
 } from "@material-ui/core";
 import { Link, Redirect } from "react-router-dom";
 import { AdminViewContext } from "./admin-view";
@@ -48,6 +49,15 @@ const EditEvent = () => {
   const [semesterID, setSemesterID] = useState(semester_id);
   const [isRecurring, setIsRecurring] = useState(true);
   const [activeDays, setActiveDays] = useState(initDays);
+
+  const [courseSubject, setCourseSubject] = useState(subject);
+  const [courseNumber, setCourseNumber] = useState(course_num);
+  const [courseInstructorFirstName, setCourseInstructorFirstName] = useState(
+    instructor_first
+  );
+  const [courseInstructorLastName, setCourseInstructorLastName] = useState(
+    instructor_last
+  );
 
   const {
     state: { currSpaceID }
@@ -158,6 +168,43 @@ const EditEvent = () => {
           </FormGroup>
 
           {isRecurring ? dayPicker() : datePicker()}
+
+          <Typography align="left" variant="h6" id="edit-building-header">
+            Course Attributes
+          </Typography>
+
+          <TextField
+            id="edit-course-subject"
+            label="Subject"
+            margin="normal"
+            value={courseSubject}
+            onChange={event => setCourseSubject(event.target.value)}
+            fullWidth
+          />
+          <TextField
+            id="edit-course-number"
+            label="Course Number"
+            margin="normal"
+            value={courseNumber}
+            onChange={event => setCourseNumber(event.target.value)}
+            fullWidth
+          />
+          <TextField
+            id="edit-course-instructor-first"
+            label="Instructor First Name"
+            margin="normal"
+            value={courseInstructorFirstName}
+            onChange={event => setCourseInstructorFirstName(event.target.value)}
+            fullWidth
+          />
+          <TextField
+            id="edit-course-instructor-last"
+            label="Instructor Last Name"
+            margin="normal"
+            value={courseInstructorLastName}
+            onChange={event => setCourseInstructorLastName(event.target.value)}
+            fullWidth
+          />
         </CardContent>
         <CardActions>
           <Button color="primary">Delete this Event</Button>
