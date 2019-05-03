@@ -25,7 +25,7 @@ const formatNavLinks = (navLinks, loggedIn) =>
     );
   });
 
-export const TigerBoardsAppBar = ({ handleLoginClick }) => {
+export const TigerBoardsAppBar = () => {
   const [loggedIn, changeLoggedIn] = useState(false);
 
   return (

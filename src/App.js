@@ -31,13 +31,11 @@ const adminView = React.lazy(() =>
 const noMatch = React.lazy(() => import("./components/no-match"));
 
 const App = () => {
-  const [showLogin, setShowLogin] = useState(false);
-
   return (
     <MuiThemeProvider theme={theme}>
       <Router>
         <div className="App">
-          <TigerBoardsAppBar handleLoginClick={() => setShowLogin(true)} />
+          <TigerBoardsAppBar />
 
           <div id="app-content-section">
             <Header />
