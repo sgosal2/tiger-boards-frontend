@@ -10,7 +10,7 @@ import {
   Checkbox,
   Switch
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { AdminViewContext } from "./admin-view";
 import { currentDate } from "../../utilities/current-date-time";
 
@@ -44,7 +44,6 @@ const EditEvent = () => {
     dispatch
   } = useContext(AdminViewContext);
 
-  const [eventID, setEventID] = useState(`${crn}${semester_id}`);
   const [eventName, setEventName] = useState(class_title);
   const [semesterID, setSemesterID] = useState(semester_id);
   const [isRecurring, setIsRecurring] = useState(true);
@@ -97,7 +96,7 @@ const EditEvent = () => {
     );
   };
 
-  return (
+  return space_id && crn ? (
     <form className="edit-form-content" noValidate autoComplete="off">
       <div id="event-manager">
         <CardContent className="edit-form-container">
@@ -150,10 +149,11 @@ const EditEvent = () => {
                 <Switch
                   checked={isRecurring}
                   onChange={event => setIsRecurring(event.target.checked)}
+                  disabled
                   value="isRecurring"
                 />
               }
-              label="Recurring Event"
+              label="Recurring Event (Non-recurring events not supported yet)"
             />
           </FormGroup>
 
@@ -177,6 +177,8 @@ const EditEvent = () => {
         </CardActions>
       </div>
     </form>
+  ) : (
+    <Redirect to="/admin/" />
   );
 };
 
