@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   TextField,
   Typography,
@@ -29,6 +29,8 @@ const EditSpace = () => {
     features ? features.join(", ") : ""
   );
   const [spaceCapacity, setSpaceCapacity] = useState(capacity);
+  const [forceRedirect, setForceRedirect] = useState(false);
+
   const eventsData = useDataApi(`${config.API_EVENTS}?space_id=${space_id}`);
   const spacesApi = useDataApi({});
 
@@ -42,7 +44,71 @@ const EditSpace = () => {
     });
   };
 
-  return building_id && space_id ? (
+  const convertFeatures = featuresList => {
+    let res = "{";
+    for (let feature of featuresList.slice(0, featuresList.length - 1)) {
+      res += `\"${feature}\", `;
+    }
+    const lastFeature = featuresList[featuresList.length - 1];
+    res += `\"${lastFeature}\"}`;
+    return res;
+  };
+
+  const saveHandler = () => {
+    if (spaceID === "newspace") {
+      alert("Please make a new building id.");
+      return;
+    } else if (space_id === "NEW") {
+      // New building
+      spacesApi.doFetch({
+        method: "post",
+        url: config.API_SPACES,
+        data: {
+          space_id: spaceID,
+          building_id,
+          name: spaceName,
+          capacity: spaceCapacity,
+          features: convertFeatures(spaceFeatures.split(", "))
+        }
+      });
+    } else {
+      // Edit building
+      spacesApi.doFetch({
+        method: "patch",
+        url: `${config.API_SPACES}${space_id}`,
+        data: {
+          space_id: spaceID,
+          building_id,
+          name: spaceName,
+          capacity: spaceCapacity,
+          features: convertFeatures(spaceFeatures.split(", "))
+        }
+      });
+    }
+  };
+
+  const newEventHandler = () =>
+    eventSelectHandler({
+      class_title: "New Event",
+      subject: "",
+      course_num: "",
+      start_time: "",
+      end_time: "",
+      days: "MWF",
+      space_id: space_id,
+      instructor_first: "",
+      instructor_last: "",
+      semester_id: "",
+      crn: "NEW"
+    });
+
+  useEffect(() => {
+    if (spacesApi.data.msg) {
+      setForceRedirect(true);
+    }
+  }, [spacesApi.data]);
+
+  return building_id && space_id && !forceRedirect ? (
     <form className="edit-form-content" noValidate autoComplete="off">
       <div id="space-manager">
         <CardContent>
@@ -51,6 +117,7 @@ const EditSpace = () => {
             label="Space ID"
             margin="normal"
             value={spaceID}
+            disabled={space_id !== "newspace"}
             onChange={event => setSpaceID(event.target.value)}
             fullWidth
           />
@@ -113,7 +180,9 @@ const EditSpace = () => {
         </CardContent>
         <CardActions>
           <Link to={`/admin/editevent/newevent`} className="unstyled-link">
-            <Button color="primary">Add Event</Button>
+            <Button color="primary" onClick={newEventHandler}>
+              Add Event
+            </Button>
           </Link>
           <Button color="primary" onClick={deleteHandler}>
             Delete this Space
@@ -121,21 +190,14 @@ const EditSpace = () => {
 
           <div className="spacer" />
 
-          <Link
-            to={
-              building_id && building_id.length > 0
-                ? `/admin/editbuilding/${building_id}`
-                : "/admin/"
-            }
-            className="unstyled-link"
-          >
-            <Button className="right-btn" color="primary">
-              Save
-            </Button>
-          </Link>
+          <Button className="right-btn" color="primary" onClick={saveHandler}>
+            Save
+          </Button>
         </CardActions>
       </div>
     </form>
+  ) : building_id && building_id.length > 0 ? (
+    <Redirect to={`/admin/editbuilding/${building_id}`} />
   ) : (
     <Redirect to="/admin/" />
   );
