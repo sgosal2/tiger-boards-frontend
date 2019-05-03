@@ -12,6 +12,9 @@ import {
 import { Link, Redirect } from "react-router-dom";
 import { AdminViewContext } from "./admin-view";
 
+import useDataApi from "../../utilities/use-data-api";
+import config from "../../config.json";
+
 const EditSpace = () => {
   const {
     state: {
@@ -26,11 +29,18 @@ const EditSpace = () => {
     features ? features.join(", ") : ""
   );
   const [spaceCapacity, setSpaceCapacity] = useState(capacity);
+  const eventsData = useDataApi(`${config.API_EVENTS}?space_id=${space_id}`);
+  const spacesApi = useDataApi({});
 
-  const events = ["COMP 51", "COMP 53"];
+  const eventSelectHandler = eventData =>
+    dispatch({ type: "change-curr-event-data", value: eventData });
 
-  const eventSelectHandler = eventID =>
-    dispatch({ type: "change-curreventid", value: eventID });
+  const deleteHandler = () => {
+    spacesApi.doFetch({
+      method: "delete",
+      url: `${config.API_SPACES}${space_id}`
+    });
+  };
 
   return building_id && space_id ? (
     <form className="edit-form-content" noValidate autoComplete="off">
@@ -72,25 +82,30 @@ const EditSpace = () => {
           <Typography align="left" variant="h6" id="edit-building-header">
             Events
           </Typography>
-          <List component="nav" id="events-list">
-            {events.length > 0 ? (
-              events.map(event => (
-                <Link
-                  to={`/admin/editevent/${event}`}
-                  key={event}
-                  className="unstyled-link"
-                >
-                  <ListItem
+          <List component="nav" className="ht20" id="events-list">
+            {eventsData.data && eventsData.data.length > 0 ? (
+              eventsData.data.map(eventData => {
+                const event = `${eventData.crn}${eventData.semester_id}`;
+                return (
+                  <Link
+                    to={`/admin/editevent/${event}`}
                     key={event}
-                    onClick={() => eventSelectHandler(event)}
-                    dense
-                    button
-                    className="edit-form-list-item"
+                    className="unstyled-link"
                   >
-                    <ListItemText primary={event} />
-                  </ListItem>
-                </Link>
-              ))
+                    <ListItem
+                      key={event}
+                      onClick={() => eventSelectHandler(eventData)}
+                      dense
+                      button
+                      className="edit-form-list-item"
+                    >
+                      <ListItemText
+                        primary={`${event} -- ${eventData.class_title}`}
+                      />
+                    </ListItem>
+                  </Link>
+                );
+              })
             ) : (
               <>There are currently no events in this space.</>
             )}
@@ -100,7 +115,9 @@ const EditSpace = () => {
           <Link to={`/admin/editevent/newevent`} className="unstyled-link">
             <Button color="primary">Add Event</Button>
           </Link>
-          <Button color="primary">Delete this Space</Button>
+          <Button color="primary" onClick={deleteHandler}>
+            Delete this Space
+          </Button>
 
           <div className="spacer" />
 
@@ -113,10 +130,9 @@ const EditSpace = () => {
             className="unstyled-link"
           >
             <Button className="right-btn" color="primary">
-              Save and return
+              Save
             </Button>
           </Link>
-          <Button color="primary">Save</Button>
         </CardActions>
       </div>
     </form>
