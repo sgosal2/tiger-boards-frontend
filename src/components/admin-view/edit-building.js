@@ -152,7 +152,10 @@ const EditBuilding = () => {
             </Button>
           </Link>
           <Button
-            disabled={saveBuilding.isLoading}
+            disabled={
+              saveBuilding.isLoading ||
+              (buildingData.data && buildingData.data.length > 0)
+            }
             onClick={deleteHandler}
             color="primary"
           >
