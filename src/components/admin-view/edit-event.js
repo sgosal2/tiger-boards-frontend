@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -11,18 +11,61 @@ import {
   Switch,
   Typography
 } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+
 import { AdminViewContext } from "./admin-view";
 import { currentDate } from "../../utilities/current-date-time";
+import useDataApi from "../../utilities/use-data-api";
+import config from "../../config.json";
 
 const initDays = {
-  Monday: true,
+  Monday: false,
   Tuesday: false,
-  Wednesday: true,
+  Wednesday: false,
   Thursday: false,
-  Friday: true,
+  Friday: false,
   Saturday: false,
   Sunday: false
+};
+
+const convertDaysString = daysString => {
+  // Copy initDays
+  const res = JSON.parse(JSON.stringify(initDays));
+
+  if (!daysString) {
+    return;
+  }
+
+  // Set values of res accordingly based on daysString
+  for (let day of daysString) {
+    switch (day) {
+      case "M":
+        res["Monday"] = true;
+        break;
+      case "T":
+        res["Tuesday"] = true;
+        break;
+      case "W":
+        res["Wednesday"] = true;
+        break;
+      case "R":
+        res["Thursday"] = true;
+        break;
+      case "F":
+        res["Friday"] = true;
+        break;
+      case "S":
+        res["Saturday"] = true;
+        break;
+      case "U":
+        res["Sunday"] = true;
+        break;
+      default:
+        break;
+    }
+  }
+
+  return res;
 };
 
 const EditEvent = () => {
@@ -41,14 +84,15 @@ const EditEvent = () => {
         semester_id,
         crn
       }
-    },
-    dispatch
+    }
   } = useContext(AdminViewContext);
 
   const [eventName, setEventName] = useState(class_title);
   const [semesterID, setSemesterID] = useState(semester_id);
   const [isRecurring, setIsRecurring] = useState(true);
-  const [activeDays, setActiveDays] = useState(initDays);
+  const [activeDays, setActiveDays] = useState(convertDaysString(days));
+  const [startTime, setStartTime] = useState(start_time);
+  const [endTime, setEndTime] = useState(end_time);
 
   const [courseSubject, setCourseSubject] = useState(subject);
   const [courseNumber, setCourseNumber] = useState(course_num);
@@ -58,10 +102,10 @@ const EditEvent = () => {
   const [courseInstructorLastName, setCourseInstructorLastName] = useState(
     instructor_last
   );
+  const [courseCRN, setCourseCRN] = useState(crn);
+  const [forceRedirect, setForceRedirect] = useState(false);
 
-  const {
-    state: { currSpaceID }
-  } = useContext(AdminViewContext);
+  const eventsApi = useDataApi({});
 
   const dayPicker = () => {
     return (
@@ -70,6 +114,7 @@ const EditEvent = () => {
         {Object.keys(initDays).map(day => {
           return (
             <FormControlLabel
+              key={day}
               control={
                 <Checkbox
                   checked={activeDays[day]}
@@ -106,7 +151,41 @@ const EditEvent = () => {
     );
   };
 
-  return space_id && crn ? (
+  const deleteHandler = () => {
+    eventsApi.doFetch({
+      method: "delete",
+      url: `${config.API_EVENTS}${crn}${semester_id}`
+    });
+  };
+
+  const saveHandler = () => {
+    if (courseCRN === "NEW") {
+      alert("Please make a new crn.");
+      return;
+    } else if (crn === "NEW") {
+      // New event
+      eventsApi.doFetch({
+        method: "post",
+        url: config.API_EVENTS,
+        data: {}
+      });
+    } else {
+      // Edit event
+      eventsApi.doFetch({
+        method: "patch",
+        url: `${config.API_EVENTS}${crn}${semester_id}`,
+        data: {}
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (eventsApi.data.msg) {
+      setForceRedirect(true);
+    }
+  }, [eventsApi.data]);
+
+  return space_id && crn && !forceRedirect ? (
     <form className="edit-form-content" noValidate autoComplete="off">
       <div id="event-manager">
         <CardContent className="edit-form-container">
@@ -127,10 +206,9 @@ const EditEvent = () => {
             fullWidth
           />
           <TextField
-            id="time"
             label="Start Time"
+            value={startTime}
             type="time"
-            defaultValue="08:00"
             className="edit-event-time"
             InputLabelProps={{
               shrink: true
@@ -138,12 +216,12 @@ const EditEvent = () => {
             inputProps={{
               step: 300 // 5 min
             }}
+            onChange={event => setStartTime(event.target.value)}
           />
           <TextField
-            id="time"
             label="End Time"
             type="time"
-            defaultValue="09:00"
+            value={endTime}
             className="edit-event-time"
             InputLabelProps={{
               shrink: true
@@ -151,6 +229,7 @@ const EditEvent = () => {
             inputProps={{
               step: 300 // 5 min
             }}
+            onChange={event => setEndTime(event.target.value)}
           />
 
           <FormGroup row>
@@ -205,25 +284,39 @@ const EditEvent = () => {
             onChange={event => setCourseInstructorLastName(event.target.value)}
             fullWidth
           />
+          <TextField
+            id="edit-course-crn"
+            label="CRN"
+            margin="normal"
+            value={courseCRN}
+            onChange={event => setCourseCRN(event.target.value)}
+            fullWidth
+          />
         </CardContent>
         <CardActions>
-          <Button color="primary">Delete this Event</Button>
+          <Button
+            color="primary"
+            disabled={eventsApi.isLoading}
+            onClick={deleteHandler}
+          >
+            Delete this Event
+          </Button>
 
           <div className="spacer" />
 
-          <Link
-            to={
-              space_id.length > 0 ? `/admin/editspace/${space_id}` : "/admin/"
-            }
-            className="unstyled-link"
+          <Button
+            className="right-btn"
+            disabled={eventsApi.isLoading}
+            color="primary"
+            onClick={saveHandler}
           >
-            <Button className="right-btn" color="primary">
-              Save
-            </Button>
-          </Link>
+            Save
+          </Button>
         </CardActions>
       </div>
     </form>
+  ) : space_id && space_id.length > 0 ? (
+    <Redirect to={`/admin/editspace/${space_id}`} />
   ) : (
     <Redirect to="/admin/" />
   );
