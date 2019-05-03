@@ -24,17 +24,31 @@ const initDays = {
   Sunday: false
 };
 
-const EditEvent = props => {
-  // Need to change this cuz url parameter is eventually gonna be eventID
-  let eventNameFromID = props.match.params.name;
-  eventNameFromID =
-    eventNameFromID === "newevent" ? "New Event" : eventNameFromID;
+const EditEvent = () => {
+  const {
+    state: {
+      currEventData: {
+        class_title,
+        subject,
+        course_num,
+        start_time,
+        end_time,
+        days,
+        space_id,
+        instructor_first,
+        instructor_last,
+        semester_id,
+        crn
+      }
+    },
+    dispatch
+  } = useContext(AdminViewContext);
 
-  const [eventID, setEventID] = useState("123456");
-  const [eventName, setEventName] = useState(eventNameFromID);
-  const [semesterID, setSemesterID] = useState("fall_2019");
+  const [eventID, setEventID] = useState(`${crn}${semester_id}`);
+  const [eventName, setEventName] = useState(class_title);
+  const [semesterID, setSemesterID] = useState(semester_id);
   const [isRecurring, setIsRecurring] = useState(true);
-  const [days, setDays] = useState(initDays);
+  const [activeDays, setActiveDays] = useState(initDays);
 
   const {
     state: { currSpaceID }
@@ -49,9 +63,12 @@ const EditEvent = props => {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={days[day]}
+                  checked={activeDays[day]}
                   onChange={event =>
-                    setDays({ ...days, [day]: event.target.checked })
+                    setActiveDays({
+                      ...activeDays,
+                      [day]: event.target.checked
+                    })
                   }
                   value={day}
                 />
@@ -84,14 +101,6 @@ const EditEvent = props => {
     <form className="edit-form-content" noValidate autoComplete="off">
       <div id="event-manager">
         <CardContent className="edit-form-container">
-          <TextField
-            id="edit-event-id"
-            label="Event ID"
-            margin="normal"
-            value={eventID}
-            onChange={event => setEventID(event.target.value)}
-            fullWidth
-          />
           <TextField
             id="edit-event-name"
             label="Event Name"
@@ -157,17 +166,14 @@ const EditEvent = props => {
 
           <Link
             to={
-              currSpaceID.length > 0
-                ? `/admin/editspace/${currSpaceID}`
-                : "/admin/"
+              space_id.length > 0 ? `/admin/editspace/${space_id}` : "/admin/"
             }
             className="unstyled-link"
           >
             <Button className="right-btn" color="primary">
-              Save and Return
+              Save
             </Button>
           </Link>
-          <Button color="primary">Save</Button>
         </CardActions>
       </div>
     </form>
