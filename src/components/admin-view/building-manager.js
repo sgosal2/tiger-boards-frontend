@@ -63,7 +63,16 @@ const BuildingManager = () => {
       </CardContent>
       <CardActions>
         <Link to={`/admin/editbuilding/newbuilding`} className="unstyled-link">
-          <Button color="primary" id="add-new-building-btn">
+          <Button
+            onClick={() =>
+              buildingSelectHandler({
+                building_id: "NEW",
+                building_name: "New Building"
+              })
+            }
+            color="primary"
+            id="add-new-building-btn"
+          >
             Add New Building
           </Button>
         </Link>

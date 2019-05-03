@@ -1,5 +1,4 @@
-import React, { useState, useContext } from "react";
-import axios from "axios";
+import React, { useState, useContext, useEffect } from "react";
 import {
   TextField,
   Typography,
@@ -23,9 +22,10 @@ const EditBuilding = () => {
     },
     dispatch
   } = useContext(AdminViewContext);
-  const { data, isLoading } = useDataApi(
+  const buildingData = useDataApi(
     `${config.API_SPACES}?building_id=${building_id}`
   );
+  const saveBuilding = useDataApi({});
 
   const [buildingID, setBuildingID] = useState(building_id);
   const [buildingName, setBuildingName] = useState(building_name);
@@ -33,13 +33,44 @@ const EditBuilding = () => {
   const spaceSelectHandler = spaceData =>
     dispatch({ type: "change-curr-space-data", value: spaceData });
 
-  const deleteHandler = async () => {
-    try {
-      await axios.delete(`${config.API_BUILDINGS}/${building_id}`);
-    } catch (e) {
-      console.log(e);
+  const saveHandler = () => {
+    if (buildingID === "NEW") {
+      alert("Please make a new building id.");
+    } else if (building_id === "NEW") {
+      // New building
+      saveBuilding.doFetch({
+        method: "post",
+        url: config.API_BUILDINGS,
+        data: {
+          building_id: buildingID,
+          building_name: buildingName
+        }
+      });
+    } else {
+      // Edit building
+      saveBuilding.doFetch({
+        method: "patch",
+        url: `${config.API_BUILDINGS}${building_id}`,
+        data: {
+          new_id: buildingID,
+          new_name: buildingName
+        }
+      });
     }
   };
+
+  const deleteHandler = () => {
+    saveBuilding.doFetch({
+      method: "delete",
+      url: `${config.API_BUILDINGS}${building_id}`
+    });
+  };
+
+  useEffect(() => {
+    if (saveBuilding.data.msg) {
+      dispatch({ type: "reset-data" });
+    }
+  }, [saveBuilding.data]);
 
   return building_id ? (
     <form className="edit-form-content" noValidate autoComplete="off">
@@ -65,12 +96,17 @@ const EditBuilding = () => {
             Spaces
           </Typography>
           <List id="building-list">
-            {data && data.length > 0 ? (
-              data.map(spaceData => (
+            {buildingData.data && buildingData.data.length > 0 ? (
+              buildingData.data.map(spaceData => (
                 <Link
                   key={spaceData.space_id}
-                  to={`/admin/editspace/${spaceData.space_id}`}
+                  to={
+                    saveBuilding.isLoading
+                      ? "#"
+                      : `/admin/editspace/${spaceData.space_id}`
+                  }
                   className="unstyled-link"
+                  disabled={saveBuilding.isLoading}
                 >
                   <ListItem
                     onClick={() => spaceSelectHandler(spaceData)}
@@ -83,7 +119,7 @@ const EditBuilding = () => {
                   </ListItem>
                 </Link>
               ))
-            ) : isLoading ? (
+            ) : buildingData.isLoading ? (
               <>Loading...</>
             ) : (
               <>There are currently no spaces in this building.</>
@@ -91,19 +127,46 @@ const EditBuilding = () => {
           </List>
         </CardContent>
         <Toolbar>
-          <Link to={`/admin/editspace/newspace`} className="unstyled-link">
-            <Button color="primary">Add New Space</Button>
+          <Link
+            to={
+              saveBuilding.isLoading || building_id === "NEW"
+                ? "#"
+                : `/admin/editspace/newspace`
+            }
+            className="unstyled-link"
+          >
+            <Button
+              disabled={saveBuilding.isLoading || building_id === "NEW"}
+              color="primary"
+              onClick={() =>
+                spaceSelectHandler({
+                  space_id: "newspace",
+                  name: "New Space",
+                  capacity: 0,
+                  features: ""
+                })
+              }
+            >
+              Add New Space
+            </Button>
           </Link>
-          <Button color="primary">Delete this Building</Button>
+          <Button
+            disabled={saveBuilding.isLoading}
+            onClick={deleteHandler}
+            color="primary"
+          >
+            Delete this Building
+          </Button>
 
           <div className="spacer" />
 
-          <Link to={`/admin/`} className="unstyled-link">
-            <Button size="small" color="primary">
-              Save and Return
-            </Button>
-          </Link>
-          <Button color="primary">Save</Button>
+          <Button
+            onClick={saveHandler}
+            disabled={saveBuilding.isLoading}
+            color="primary"
+          >
+            Save
+          </Button>
         </Toolbar>
       </div>
     </form>
