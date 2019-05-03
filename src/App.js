@@ -1,7 +1,7 @@
 import React, { useState, Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { Paper } from "@material-ui/core";
+import { CircularProgress, Paper } from "@material-ui/core";
 
 import "./scss/main.scss";
 import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
@@ -51,7 +51,7 @@ const App = () => {
               <Header />
 
               <Paper id="app-content">
-                <Suspense fallback={<h1>Loading..</h1>}>
+                <Suspense fallback={<CircularProgress />}>
                   <Switch>
                     <Route exact path="/" component={spaceAvailabilityBoard} />
                     <Route path="/admin/" component={adminView} />
