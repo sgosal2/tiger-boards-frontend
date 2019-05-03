@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { Toolbar, Typography, Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
@@ -8,14 +8,10 @@ const appBarLinks = [
   {
     to: "/admin/",
     text: "Admin"
-  },
-  {
-    to: "/account/",
-    text: "Account"
   }
 ];
 
-const formatNavLinks = navLinks =>
+const formatNavLinks = (navLinks, loggedIn) =>
   navLinks.map(link => {
     return (
       <NavLink
@@ -30,6 +26,8 @@ const formatNavLinks = navLinks =>
   });
 
 export const TigerBoardsAppBar = ({ handleLoginClick }) => {
+  const [loggedIn, changeLoggedIn] = useState(false);
+
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
@@ -43,8 +41,9 @@ export const TigerBoardsAppBar = ({ handleLoginClick }) => {
         {/* TODO: Hide Account if not logged in */}
         {formatNavLinks(appBarLinks)}
 
-        {/* TODO: Change Login text to Logout if logged in */}
-        <GoogleLogin />
+        {/* Button cannot be included in appBarLinks because GoogleLogin 
+        component is not regular button */}
+        <GoogleLogin loggedIn={loggedIn} changeLoggedIn={changeLoggedIn} />
       </Toolbar>
     </AppBar>
   );

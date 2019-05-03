@@ -4,8 +4,8 @@ import { Button } from "@material-ui/core";
 const GOOGLE_BUTTON_ID = "google-sign-in-button";
 let googleUserObj;
 
-export const GoogleLogin = () => {
-  const [loggedIn, changeLoggedIn] = useState(false);
+export const GoogleLogin = ({ loggedIn, changeLoggedIn }) => {
+  // const [loggedIn, changeLoggedIn] = useState(false);
 
   const renderLoginButton = () => {
     window.gapi.signin2.render(GOOGLE_BUTTON_ID, {
