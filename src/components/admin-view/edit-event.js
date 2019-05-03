@@ -68,6 +68,21 @@ const convertDaysString = daysString => {
   return res;
 };
 
+const convertDaysObject = daysObject => {
+  if (!daysObject) {
+    return;
+  }
+  let res = "";
+  res += daysObject.Monday ? "M" : "";
+  res += daysObject.Tuesday ? "T" : "";
+  res += daysObject.Wednesday ? "W" : "";
+  res += daysObject.Thursday ? "R" : "";
+  res += daysObject.Friday ? "F" : "";
+  res += daysObject.Saturday ? "S" : "";
+  res += daysObject.Sunday ? "U" : "";
+  return res;
+};
+
 const EditEvent = () => {
   const {
     state: {
@@ -158,6 +173,20 @@ const EditEvent = () => {
     });
   };
 
+  let allData = {
+    class_title: eventName,
+    subject: courseSubject,
+    course_num: courseNumber,
+    start_time: startTime,
+    end_time: endTime,
+    days: convertDaysObject(activeDays),
+    space_id,
+    instructor_first: courseInstructorFirstName,
+    instructor_last: courseInstructorLastName,
+    semester_id: semesterID,
+    crn: courseCRN
+  };
+
   const saveHandler = () => {
     if (courseCRN === "NEW") {
       alert("Please make a new crn.");
@@ -167,14 +196,14 @@ const EditEvent = () => {
       eventsApi.doFetch({
         method: "post",
         url: config.API_EVENTS,
-        data: {}
+        data: allData
       });
     } else {
       // Edit event
       eventsApi.doFetch({
         method: "patch",
         url: `${config.API_EVENTS}${crn}${semester_id}`,
-        data: {}
+        data: allData
       });
     }
   };
