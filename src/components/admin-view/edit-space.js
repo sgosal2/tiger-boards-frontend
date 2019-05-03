@@ -180,17 +180,33 @@ const EditSpace = () => {
         </CardContent>
         <CardActions>
           <Link to={`/admin/editevent/newevent`} className="unstyled-link">
-            <Button color="primary" onClick={newEventHandler}>
+            <Button
+              color="primary"
+              disabled={spacesApi.isLoading}
+              onClick={newEventHandler}
+            >
               Add Event
             </Button>
           </Link>
-          <Button color="primary" onClick={deleteHandler}>
+          <Button
+            color="primary"
+            disabled={
+              spacesApi.isLoading ||
+              (eventsData.data && eventsData.data.length > 0)
+            }
+            onClick={deleteHandler}
+          >
             Delete this Space
           </Button>
 
           <div className="spacer" />
 
-          <Button className="right-btn" color="primary" onClick={saveHandler}>
+          <Button
+            className="right-btn"
+            color="primary"
+            disabled={spacesApi.isLoading}
+            onClick={saveHandler}
+          >
             Save
           </Button>
         </CardActions>
