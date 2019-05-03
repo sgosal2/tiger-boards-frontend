@@ -58,7 +58,7 @@ const EditSpace = () => {
     if (spaceID === "newspace") {
       alert("Please make a new building id.");
       return;
-    } else if (space_id === "NEW") {
+    } else if (space_id === "newspace") {
       // New building
       spacesApi.doFetch({
         method: "post",
