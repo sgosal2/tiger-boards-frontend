@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button } from "@material-ui/core";
+import { UserContext } from "../App";
 
 const GOOGLE_BUTTON_ID = "google-sign-in-button";
 let googleUserObj;
 
-export const GoogleLogin = ({ loggedIn, changeLoggedIn }) => {
-  // const [loggedIn, changeLoggedIn] = useState(false);
+export const GoogleLogin = () => {
+  const user = useContext(UserContext);
 
   const renderLoginButton = () => {
     window.gapi.signin2.render(GOOGLE_BUTTON_ID, {
@@ -20,14 +21,13 @@ export const GoogleLogin = ({ loggedIn, changeLoggedIn }) => {
     // Make API call here for JWT
     googleUserObj = googleUser;
     const profile = googleUserObj.getBasicProfile();
-    console.log("Email: " + profile.getEmail());
-    changeLoggedIn(true);
+    user.changeUserEmail(profile.getEmail());
   };
 
   const logOut = () => {
     googleUserObj.disconnect().then(() => {
       googleUserObj = null;
-      changeLoggedIn(false);
+      user.changeUserEmail(null);
     });
   };
 
@@ -43,7 +43,7 @@ export const GoogleLogin = ({ loggedIn, changeLoggedIn }) => {
     }
   });
 
-  if (!loggedIn) {
+  if (user.email == null) {
     return <div id={GOOGLE_BUTTON_ID} />;
   } else {
     return (

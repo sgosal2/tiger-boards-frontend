@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import { Toolbar, Typography, Button } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
@@ -26,8 +26,6 @@ const formatNavLinks = (navLinks, loggedIn) =>
   });
 
 export const TigerBoardsAppBar = () => {
-  const [loggedIn, changeLoggedIn] = useState(false);
-
   return (
     <AppBar position="static" color="primary">
       <Toolbar>
@@ -43,7 +41,7 @@ export const TigerBoardsAppBar = () => {
 
         {/* Button cannot be included in appBarLinks because GoogleLogin 
         component is not regular button */}
-        <GoogleLogin loggedIn={loggedIn} changeLoggedIn={changeLoggedIn} />
+        <GoogleLogin />
       </Toolbar>
     </AppBar>
   );
