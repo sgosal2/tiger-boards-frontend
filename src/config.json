@@ -1,5 +1,7 @@
 {
-  "API_SPACES": "https://tiger-boards-server.herokuapp.com//spaces/",
-  "API_BUILDINGS": "https://tiger-boards-server.herokuapp.com//buildings/",
+  "API_SPACES": "http://localhost:5000/spaces/",
+  "API_BUILDINGS": "http://localhost:5000/buildings/",
+  "API_ADMINS": "http://localhost:5000/admins/",
+  "API_JWT": "http://127.0.0.1:5000/login/",
   "DEFAULT_BUILDING": "CTC"
 }

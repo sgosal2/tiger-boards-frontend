@@ -11,16 +11,14 @@ import {
 import config from "../../config.json";
 import useDataApi from "../../utilities/use-data-api";
 
-let handleAdminRemove = admin => {
-  alert(`${admin} will be removed from the admin list`);
-};
-
-export const SystemAdminList = admins => {
+export const SystemAdminList = () => {
   const systemAdmins = useDataApi({});
   const updateSystemAdmins = useDataApi({});
 
   const systemAdminsUrl = `${config.API_ADMINS}`;
   useEffect(() => systemAdmins.doFetch(systemAdminsUrl), [systemAdminsUrl]);
+
+  const handleAdminRemove = email => alert(email);
 
   if (systemAdmins.isLoading || systemAdmins.data.length == 0) {
     return (

@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect, Suspense } from "react";
+import React, { useState, useReducer, useEffect } from "react";
 import {
   Table,
   TableHead,
