@@ -15,6 +15,16 @@ import { AdminViewContext } from "./admin-view";
 import useDataApi from "../../utilities/use-data-api";
 import config from "../../config.json";
 
+const convertFeatures = featuresList => {
+  let res = "{";
+  for (let feature of featuresList.slice(0, featuresList.length - 1)) {
+    res += `\"${feature}\", `;
+  }
+  const lastFeature = featuresList[featuresList.length - 1];
+  res += `\"${lastFeature}\"}`;
+  return res;
+};
+
 const EditSpace = () => {
   const {
     state: {
@@ -42,16 +52,6 @@ const EditSpace = () => {
       method: "delete",
       url: `${config.API_SPACES}${space_id}`
     });
-  };
-
-  const convertFeatures = featuresList => {
-    let res = "{";
-    for (let feature of featuresList.slice(0, featuresList.length - 1)) {
-      res += `\"${feature}\", `;
-    }
-    const lastFeature = featuresList[featuresList.length - 1];
-    res += `\"${lastFeature}\"}`;
-    return res;
   };
 
   const saveHandler = () => {
@@ -173,6 +173,8 @@ const EditSpace = () => {
                   </Link>
                 );
               })
+            ) : eventsData.isLoading ? (
+              <>Loading...</>
             ) : (
               <>There are currently no events in this space.</>
             )}
