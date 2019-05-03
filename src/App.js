@@ -21,6 +21,8 @@ const theme = createMuiTheme({
   }
 });
 
+export const UserContext = React.createContext();
+
 // Lazy load route components
 const spaceAvailabilityBoard = React.lazy(() =>
   import("./components/space-availability/space-availability-board")
@@ -31,25 +33,34 @@ const adminView = React.lazy(() =>
 const noMatch = React.lazy(() => import("./components/no-match"));
 
 const App = () => {
+  const [userEmail, changeUserEmail] = useState(null);
+
   return (
     <MuiThemeProvider theme={theme}>
       <Router>
         <div className="App">
-          <TigerBoardsAppBar />
+          <UserContext.Provider
+            value={{
+              email: userEmail,
+              changeUserEmail: email => changeUserEmail(email)
+            }}
+          >
+            <TigerBoardsAppBar />
 
-          <div id="app-content-section">
-            <Header />
+            <div id="app-content-section">
+              <Header />
 
-            <Paper id="app-content">
-              <Suspense fallback={<h1>Loading..</h1>}>
-                <Switch>
-                  <Route exact path="/" component={spaceAvailabilityBoard} />
-                  <Route path="/admin/" component={adminView} />
-                  <Route component={noMatch} />
-                </Switch>
-              </Suspense>
-            </Paper>
-          </div>
+              <Paper id="app-content">
+                <Suspense fallback={<h1>Loading..</h1>}>
+                  <Switch>
+                    <Route exact path="/" component={spaceAvailabilityBoard} />
+                    <Route path="/admin/" component={adminView} />
+                    <Route component={noMatch} />
+                  </Switch>
+                </Suspense>
+              </Paper>
+            </div>
+          </UserContext.Provider>
         </div>
       </Router>
     </MuiThemeProvider>
