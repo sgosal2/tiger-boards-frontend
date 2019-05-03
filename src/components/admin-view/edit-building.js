@@ -81,6 +81,7 @@ const EditBuilding = () => {
             label="Building ID"
             margin="normal"
             value={buildingID}
+            disabled={building_id !== "NEW"}
             onChange={event => setBuildingID(event.target.value)}
             fullWidth
           />
