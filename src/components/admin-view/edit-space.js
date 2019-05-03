@@ -184,7 +184,7 @@ const EditSpace = () => {
           <Link to={`/admin/editevent/newevent`} className="unstyled-link">
             <Button
               color="primary"
-              disabled={spacesApi.isLoading}
+              disabled={spacesApi.isLoading || space_id === "newspace"}
               onClick={newEventHandler}
             >
               Add Event
