@@ -1,7 +1,7 @@
-import React, { Suspense } from "react";
+import React, { useState, Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
-import { Paper } from "@material-ui/core";
+import { CircularProgress, Paper } from "@material-ui/core";
 
 import "./scss/main.scss";
 import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
@@ -21,6 +21,8 @@ const theme = createMuiTheme({
   }
 });
 
+export const UserContext = React.createContext();
+
 // Lazy load route components
 const spaceAvailabilityBoard = React.lazy(() =>
   import("./components/space-availability/space-availability-board")
@@ -31,28 +33,37 @@ const adminView = React.lazy(() =>
 const noMatch = React.lazy(() => import("./components/no-match"));
 
 const App = () => {
+  const [userEmail, changeUserEmail] = useState(null);
+  const [userIsAdmin, changeUserAdminStatus] = useState(false);
+
   return (
     <MuiThemeProvider theme={theme}>
       <Router>
         <div className="App">
-          <TigerBoardsAppBar />
+          <UserContext.Provider
+            value={{
+              email: userEmail,
+              isAdmin: userIsAdmin,
+              changeUserEmail: email => changeUserEmail(email),
+              changeAdminStatus: status => changeUserAdminStatus(status)
+            }}
+          >
+            <TigerBoardsAppBar />
 
-          <div id="app-content-section">
-            <Header />
+            <div id="app-content-section">
+              <Header />
 
-            <Paper>
-              <div id="app-content">
-                <Suspense fallback={<h1>Loading..</h1>}>
+              <Paper id="app-content">
+                <Suspense fallback={<CircularProgress />}>
                   <Switch>
                     <Route exact path="/" component={spaceAvailabilityBoard} />
                     <Route path="/admin/" component={adminView} />
-
                     <Route component={noMatch} />
                   </Switch>
                 </Suspense>
-              </div>
-            </Paper>
-          </div>
+              </Paper>
+            </div>
+          </UserContext.Provider>
         </div>
       </Router>
     </MuiThemeProvider>
