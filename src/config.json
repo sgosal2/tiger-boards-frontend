@@ -3,5 +3,6 @@
   "API_BUILDINGS": "http://localhost:5000/buildings/",
   "API_ADMINS": "http://localhost:5000/admins/",
   "API_JWT": "http://127.0.0.1:5000/login/",
+  "API_EVENTS": "http://localhost:5000/events/",
   "DEFAULT_BUILDING": "CTC"
 }

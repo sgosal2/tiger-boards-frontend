@@ -35,11 +35,13 @@ export const SpaceAvailabilityBoard = () => {
   };
   const handleModalClose = () => setModalOpen(false);
 
-  const urlParams = `?building_id=${state.building}`;
+  const urlParams = `?building_id=${state.building}&datetime=${state.datetime}`;
   const url = `${config.API_SPACES}${urlParams}`;
+  let timer = null;
 
   useEffect(() => {
-    spacesApiResponse.doFetch(url);
+    clearTimeout(timer);
+    setTimeout(() => spacesApiResponse.doFetch(url), 300);
   }, [url]);
 
   useEffect(() => {

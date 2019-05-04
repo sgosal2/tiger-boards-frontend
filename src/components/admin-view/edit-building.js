@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   TextField,
   Typography,
@@ -9,25 +9,70 @@ import {
   CardContent,
   Toolbar
 } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+
 import { AdminViewContext } from "./admin-view";
+import useDataApi from "../../utilities/use-data-api";
+import config from "../../config.json";
 
-const EditBuilding = props => {
-  const spaces = ["114", "113"];
-  // const spaces = [];
-  const { dispatch } = useContext(AdminViewContext);
+const EditBuilding = () => {
+  const {
+    state: {
+      currBuildingData: { building_id, building_name }
+    },
+    dispatch
+  } = useContext(AdminViewContext);
+  const buildingData = useDataApi(
+    `${config.API_SPACES}?building_id=${building_id}`
+  );
+  const saveBuilding = useDataApi({});
 
-  const [buildingID, setBuildingID] = useState("12345");
-  // Need to change this cuz url parameter is eventually gonna be buildingID
-  let buildingNameFromID = props.match.params.name;
-  buildingNameFromID =
-    buildingNameFromID === "newbuilding" ? "New Building" : buildingNameFromID;
-  const [buildingName, setBuildingName] = useState(buildingNameFromID);
+  const [buildingID, setBuildingID] = useState(building_id);
+  const [buildingName, setBuildingName] = useState(building_name);
 
-  const spaceSelectHandler = spaceID =>
-    dispatch({ type: "change-currspaceid", value: spaceID });
+  const spaceSelectHandler = spaceData =>
+    dispatch({ type: "change-curr-space-data", value: spaceData });
 
-  return (
+  const saveHandler = () => {
+    if (buildingID === "NEW") {
+      alert("Please make a new building id.");
+    } else if (building_id === "NEW") {
+      // New building
+      saveBuilding.doFetch({
+        method: "post",
+        url: config.API_BUILDINGS,
+        data: {
+          building_id: buildingID,
+          building_name: buildingName
+        }
+      });
+    } else {
+      // Edit building
+      saveBuilding.doFetch({
+        method: "patch",
+        url: `${config.API_BUILDINGS}${building_id}`,
+        data: {
+          new_id: buildingID,
+          new_name: buildingName
+        }
+      });
+    }
+  };
+
+  const deleteHandler = () => {
+    saveBuilding.doFetch({
+      method: "delete",
+      url: `${config.API_BUILDINGS}${building_id}`
+    });
+  };
+
+  useEffect(() => {
+    if (saveBuilding.data.msg) {
+      dispatch({ type: "reset-data" });
+    }
+  }, [saveBuilding.data]);
+
+  return building_id ? (
     <form className="edit-form-content" noValidate autoComplete="off">
       <div id="building-manager">
         <CardContent>
@@ -36,6 +81,7 @@ const EditBuilding = props => {
             label="Building ID"
             margin="normal"
             value={buildingID}
+            disabled={building_id !== "NEW"}
             onChange={event => setBuildingID(event.target.value)}
             fullWidth
           />
@@ -51,48 +97,85 @@ const EditBuilding = props => {
             Spaces
           </Typography>
           <List id="building-list">
-            {spaces.length > 0 ? (
-              spaces.map(space => (
+            {buildingData.data && buildingData.data.length > 0 ? (
+              buildingData.data.map(spaceData => (
                 <Link
-                  key={space}
-                  to={`/admin/editspace/${space}`}
+                  key={spaceData.space_id}
+                  to={
+                    saveBuilding.isLoading
+                      ? "#"
+                      : `/admin/editspace/${spaceData.space_id}`
+                  }
                   className="unstyled-link"
+                  disabled={saveBuilding.isLoading}
                 >
                   <ListItem
-                    onClick={() => spaceSelectHandler(space)}
-                    key={space}
+                    onClick={() => spaceSelectHandler(spaceData)}
+                    key={spaceData.space_id}
                     dense
                     button
                     className="edit-form-list-item"
                   >
-                    <ListItemText primary={space} />
+                    <ListItemText primary={spaceData.name} />
                   </ListItem>
                 </Link>
               ))
+            ) : buildingData.isLoading ? (
+              <>Loading...</>
             ) : (
               <>There are currently no spaces in this building.</>
             )}
           </List>
         </CardContent>
         <Toolbar>
-          <Link to={`/admin/editspace/newspace`} className="unstyled-link">
-            <Button color="primary">Add New Space</Button>
+          <Link
+            to={
+              saveBuilding.isLoading || building_id === "NEW"
+                ? "#"
+                : `/admin/editspace/newspace`
+            }
+            className="unstyled-link"
+          >
+            <Button
+              disabled={saveBuilding.isLoading || building_id === "NEW"}
+              color="primary"
+              onClick={() =>
+                spaceSelectHandler({
+                  space_id: "newspace",
+                  name: "New Space",
+                  capacity: 0,
+                  features: ""
+                })
+              }
+            >
+              Add New Space
+            </Button>
           </Link>
-          <Button color="primary">Delete this Building</Button>
+          <Button
+            disabled={
+              saveBuilding.isLoading ||
+              (buildingData.data && buildingData.data.length > 0)
+            }
+            onClick={deleteHandler}
+            color="primary"
+          >
+            Delete this Building
+          </Button>
 
           <div className="spacer" />
 
-          <Link to={`/admin/`} className="unstyled-link">
-            <Button size="small" noWrap color="primary">
-              Save and Return
-            </Button>
-          </Link>
-          <Button noWrap color="primary">
+          <Button
+            onClick={saveHandler}
+            disabled={saveBuilding.isLoading}
+            color="primary"
+          >
             Save
           </Button>
         </Toolbar>
       </div>
     </form>
+  ) : (
+    <Redirect to="/admin/" />
   );
 };
 
