@@ -1,3 +1,14 @@
+## Website URL: 
+https://tigerboards.netlify.com/
+
+## Files to look at:
+1. https://github.com/sgosal2/tiger-boards-frontend/blob/master/src/components/admin-view/edit-event.js
+
+2. https://github.com/sgosal2/tiger-boards-frontend/blob/master/src/components/space-availability/space-availability-board.js
+
+
+------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
