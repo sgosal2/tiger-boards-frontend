@@ -34,18 +34,11 @@ export const GoogleLogin = () => {
     });
   };
 
-  // JWT returned
-  if (loginApi.data.length != 0) {
-    document.cookie = `access_cookie=${loginApi.data.access_token}; path=/`;
-    document.cookie = `refresh_cookie=${
-      loginApi.data.refresh_token
-    }; path=/login`;
-  }
-
   const logOut = () => {
     googleUserObj.disconnect().then(() => {
       googleUserObj = null;
       user.changeUserEmail(null);
+      user.changeAdminStatus(false);
     });
   };
 
@@ -61,6 +54,11 @@ export const GoogleLogin = () => {
     }
   });
 
+  if (loginApi.data.length != 0 && !user.isAdmin) {
+    user.changeAdminStatus(loginApi.data.is_admin);
+  }
+
+  console.log(loginApi.data);
   if (user.email == null) {
     return <div id={GOOGLE_BUTTON_ID} />;
   } else {
