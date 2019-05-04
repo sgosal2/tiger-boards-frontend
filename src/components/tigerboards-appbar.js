@@ -8,10 +8,6 @@ const appBarLinks = [
   {
     to: "/admin/",
     text: "Admin"
-  },
-  {
-    to: "/account/",
-    text: "Account"
   }
 ];
 
