@@ -1,18 +1,15 @@
 import React, { useContext, useEffect } from "react";
-import { Button, CircularProgress } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import { UserContext } from "../App";
 import useDataApi from "../utilities/use-data-api";
 import config from "../config.json";
 
 const GOOGLE_BUTTON_ID = "google-sign-in-button";
 let googleUserObj;
-let axiosReqBody;
 
 export const GoogleLogin = () => {
   const loginApi = useDataApi({});
   const user = useContext(UserContext);
-
-  useEffect(() => loginApi.doFetch(axiosReqBody), [axiosReqBody]);
 
   const renderLoginButton = () => {
     window.gapi.signin2.render(GOOGLE_BUTTON_ID, {
@@ -28,15 +25,22 @@ export const GoogleLogin = () => {
     const profile = googleUserObj.getBasicProfile();
     const userEmail = profile.getEmail();
     user.changeUserEmail(userEmail);
-    axiosReqBody = {
+    loginApi.doFetch({
       method: "post",
       url: `${config.API_JWT}`,
       data: {
         email: userEmail
       }
-    };
-    console.log("Axios body changed");
+    });
   };
+
+  // JWT returned
+  if (loginApi.data.length != 0) {
+    document.cookie = `access_cookie=${loginApi.data.access_token}; path=/`;
+    document.cookie = `refresh_cookie=${
+      loginApi.data.refresh_token
+    }; path=/login`;
+  }
 
   const logOut = () => {
     googleUserObj.disconnect().then(() => {
@@ -57,11 +61,8 @@ export const GoogleLogin = () => {
     }
   });
 
-  console.log(loginApi.data);
   if (user.email == null) {
     return <div id={GOOGLE_BUTTON_ID} />;
-  } else if (loginApi.isLoading) {
-    return <CircularProgress />;
   } else {
     return (
       <Button onClick={() => logOut()} color="inherit">
