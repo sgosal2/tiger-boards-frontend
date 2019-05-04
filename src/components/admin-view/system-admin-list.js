@@ -21,7 +21,7 @@ export const SystemAdminList = () => {
   const handleAdminRemove = email => {
     updateSystemAdmins.doFetch({
       method: "delete",
-      url: `${config.API_ADMINS}/${email}`
+      url: `${config.API_ADMINS}${email}`
     });
     console.log("Admin removed");
   };
