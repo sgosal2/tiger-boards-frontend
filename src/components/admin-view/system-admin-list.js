@@ -18,7 +18,13 @@ export const SystemAdminList = () => {
   const systemAdminsUrl = `${config.API_ADMINS}`;
   useEffect(() => systemAdmins.doFetch(systemAdminsUrl), [systemAdminsUrl]);
 
-  const handleAdminRemove = email => alert(email);
+  const handleAdminRemove = email => {
+    updateSystemAdmins.doFetch({
+      method: "delete",
+      url: `${config.API_ADMINS}/${email}`
+    });
+    console.log("Admin removed");
+  };
 
   if (systemAdmins.isLoading || systemAdmins.data.length == 0) {
     return (
