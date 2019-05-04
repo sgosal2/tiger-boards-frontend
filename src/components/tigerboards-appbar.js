@@ -29,7 +29,7 @@ const formatNavLinks = navLinks =>
     );
   });
 
-export const TigerBoardsAppBar = ({ handleLoginClick }) => {
+export const TigerBoardsAppBar = () => {
   return (
     <AppBar position="static" color="primary">
       <Toolbar>

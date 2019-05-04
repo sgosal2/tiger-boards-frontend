@@ -8,9 +8,10 @@
 }
 
 #app-content {
-  max-height: 75vh;
+  max-height: 85vh;
   margin-top: 3vh;
   overflow-x: auto;
+  overflow-y: auto;
 }
 
 #app-content-section {
@@ -34,4 +35,9 @@
 .spacer {
   width: 50%;
   flex-grow: 1;
+}
+
+.ht20 {
+  max-height: 20vh;
+  overflow-y: auto;
 }

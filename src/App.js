@@ -1,11 +1,10 @@
-import React, { useState, Suspense } from "react";
+import React, { Suspense } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import { Paper } from "@material-ui/core";
 
 import "./scss/main.scss";
 import { TigerBoardsAppBar } from "./components/tigerboards-appbar";
-import { LoginDialog } from "./components/login-dialog";
 import Header from "./components/header";
 
 const theme = createMuiTheme({
@@ -32,30 +31,26 @@ const adminView = React.lazy(() =>
 const noMatch = React.lazy(() => import("./components/no-match"));
 
 const App = () => {
-  const [showLogin, setShowLogin] = useState(false);
-
   return (
     <MuiThemeProvider theme={theme}>
       <Router>
         <div className="App">
-          <TigerBoardsAppBar handleLoginClick={() => setShowLogin(true)} />
-          <LoginDialog
-            isOpen={showLogin}
-            handleClose={() => setShowLogin(false)}
-          />
+          <TigerBoardsAppBar />
 
           <div id="app-content-section">
             <Header />
 
-            <Paper id="app-content">
-              <Suspense fallback={<h1>Loading..</h1>}>
-                <Switch>
-                  <Route exact path="/" component={spaceAvailabilityBoard} />
-                  <Route path="/admin/" component={adminView} />
+            <Paper>
+              <div id="app-content">
+                <Suspense fallback={<h1>Loading..</h1>}>
+                  <Switch>
+                    <Route exact path="/" component={spaceAvailabilityBoard} />
+                    <Route path="/admin/" component={adminView} />
 
-                  <Route component={noMatch} />
-                </Switch>
-              </Suspense>
+                    <Route component={noMatch} />
+                  </Switch>
+                </Suspense>
+              </div>
             </Paper>
           </div>
         </div>

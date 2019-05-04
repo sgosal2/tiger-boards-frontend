@@ -4,12 +4,13 @@ import { Route, Switch } from "react-router-dom";
 import adminViewReducer from "../../reducers/admin-view-reducer";
 
 const initialState = {
-  currBuildingID: "",
   buildingsData: [],
-  currSpaceID: "",
   spacesData: [],
   currEventID: "",
-  eventsData: []
+  eventsData: [],
+  currBuildingData: {},
+  currSpaceData: {},
+  currEventData: {}
 };
 
 const buildingManager = React.lazy(() => import("./building-manager"));
@@ -47,7 +48,10 @@ const AdminView = () => {
           textColor="primary"
           centered
         >
-          <Tab label="Manage Spaces" />
+          <Tab
+            label="Manage Spaces"
+            onClick={() => dispatch({ type: "reset-data" })}
+          />
           <Tab label="Manage Admins" />
         </Tabs>
 
