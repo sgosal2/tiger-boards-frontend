@@ -41,7 +41,7 @@ export const AddSystemAdminForm = () => {
           onChange={e => setEmailToAdd(e.target.value)}
         />
         {addAdminApi.isLoading ? (
-          <CircularProgress />
+          <CircularProgress id="addSystemAdminSubmitButton" />
         ) : (
           <Button
             color="primary"

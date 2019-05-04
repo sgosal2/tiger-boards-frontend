@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   CircularProgress,
@@ -23,9 +23,9 @@ export const SystemAdminList = () => {
       method: "delete",
       url: `${config.API_ADMINS}${email}`
     });
-    console.log("Admin removed");
   };
 
+  console.log(systemAdmins.data);
   if (systemAdmins.isLoading || systemAdmins.data.length == 0) {
     return (
       <div>
