@@ -11,7 +11,7 @@ const appBarLinks = [
   }
 ];
 
-const formatNavLinks = navLinks =>
+const formatNavLinks = (navLinks, loggedIn) =>
   navLinks.map(link => {
     return (
       <NavLink
@@ -39,7 +39,8 @@ export const TigerBoardsAppBar = () => {
         {/* TODO: Hide Account if not logged in */}
         {formatNavLinks(appBarLinks)}
 
-        {/* TODO: Change Login text to Logout if logged in */}
+        {/* Button cannot be included in appBarLinks because GoogleLogin 
+        component is not regular button */}
         <GoogleLogin />
       </Toolbar>
     </AppBar>

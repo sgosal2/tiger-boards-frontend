@@ -1,6 +1,7 @@
-import React, { useState, useReducer } from "react";
+import React, { useState, useReducer, useContext } from "react";
 import { Tabs, Tab } from "@material-ui/core";
-import { Route, Switch } from "react-router-dom";
+import { Route, Redirect, Switch } from "react-router-dom";
+import { UserContext } from "../../App";
 import adminViewReducer from "../../reducers/admin-view-reducer";
 
 const initialState = {
@@ -37,8 +38,10 @@ const BuildingManagerTab = () => {
 const AdminView = () => {
   const [currTab, setCurrTab] = useState(0);
   const [state, dispatch] = useReducer(adminViewReducer, initialState);
+  const user = useContext(UserContext);
 
-  return (
+  console.log(user.isAdmin);
+  return user.isAdmin ? (
     <AdminViewContext.Provider value={{ state, dispatch }}>
       <div id="admin-view-content">
         <Tabs
@@ -59,6 +62,8 @@ const AdminView = () => {
         {currTab === 1 && <SystemAdminManager />}
       </div>
     </AdminViewContext.Provider>
+  ) : (
+    <Redirect to="/" />
   );
 };
 
