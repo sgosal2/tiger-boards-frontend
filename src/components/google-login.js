@@ -54,9 +54,9 @@ export const GoogleLogin = () => {
     }
   });
 
-  if (loginApi.data.length != 0 && !user.isAdmin) {
+  useEffect(() => {
     user.changeAdminStatus(loginApi.data.is_admin);
-  }
+  }, [loginApi.data]);
 
   console.log(loginApi.data);
   if (user.email == null) {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   Button,
   CircularProgress,
@@ -8,25 +8,9 @@ import {
   ListItemSecondaryAction,
   Typography
 } from "@material-ui/core";
-import config from "../../config.json";
-import useDataApi from "../../utilities/use-data-api";
 
-export const SystemAdminList = () => {
-  const systemAdmins = useDataApi({});
-  const updateSystemAdmins = useDataApi({});
-
-  const systemAdminsUrl = `${config.API_ADMINS}`;
-  useEffect(() => systemAdmins.doFetch(systemAdminsUrl), [systemAdminsUrl]);
-
-  const handleAdminRemove = email => {
-    updateSystemAdmins.doFetch({
-      method: "delete",
-      url: `${config.API_ADMINS}${email}`
-    });
-  };
-
-  console.log(systemAdmins.data);
-  if (systemAdmins.isLoading || systemAdmins.data.length == 0) {
+export const SystemAdminList = ({ admins, handleRemove, isLoading }) => {
+  if (isLoading || admins.length == 0) {
     return (
       <div>
         <Typography variant="h6">System Administrators</Typography>
@@ -38,14 +22,14 @@ export const SystemAdminList = () => {
       <div>
         <Typography variant="h6">System Administrators</Typography>
         <List>
-          {systemAdmins.data.map(admin => {
+          {admins.map(admin => {
             return (
               <ListItem>
                 <ListItemText primary={admin.email} />
                 <ListItemSecondaryAction>
                   <Button
                     color="primary"
-                    onClick={() => handleAdminRemove(admin.email)}
+                    onClick={() => handleRemove(admin.email)}
                   >
                     Remove
                   </Button>
