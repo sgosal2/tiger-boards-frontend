@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useDataApi from "../../utilities/use-data-api";
 import config from "../../config.json";
 import {
@@ -16,16 +16,14 @@ export const AddSystemAdminForm = () => {
   const [emailToAdd, setEmailToAdd] = useState("");
   const addAdminApi = useDataApi({});
 
-  useEffect(() => addAdminApi.doFetch(axiosReqBody), [axiosReqBody]);
-
   const addSystemAdmin = admin => {
-    axiosReqBody = {
+    addAdminApi.doFetch({
       method: "post",
       url: `${config.API_ADMINS}`,
       data: {
         email: admin
       }
-    };
+    });
     setEmailToAdd("");
   };
 
