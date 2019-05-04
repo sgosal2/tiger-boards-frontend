@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import useDataApi from "../../utilities/use-data-api";
 import config from "../../config.json";
 import {
@@ -10,9 +10,11 @@ import {
   Typography
 } from "@material-ui/core";
 
+import { SystemAdminsContext } from "./system-admin-manager-view";
 let axiosReqBody;
 
 export const AddSystemAdminForm = () => {
+  const systemAdminsData = useContext(SystemAdminsContext);
   const [emailToAdd, setEmailToAdd] = useState("");
   const addAdminApi = useDataApi({});
 
@@ -26,6 +28,12 @@ export const AddSystemAdminForm = () => {
     });
     setEmailToAdd("");
   };
+
+  useEffect(() => {
+    if (addAdminApi.data && addAdminApi.data.msg) {
+      systemAdminsData.changeForceRefetch(true);
+    }
+  }, [addAdminApi.data]);
 
   return (
     <div>

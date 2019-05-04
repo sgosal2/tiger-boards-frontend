@@ -261,7 +261,7 @@ const EditEvent = () => {
             onChange={event => setEndTime(event.target.value)}
           />
 
-          <FormGroup row>
+          {/* <FormGroup row>
             <FormControlLabel
               control={
                 <Switch
@@ -273,7 +273,7 @@ const EditEvent = () => {
               }
               label="Recurring Event (Non-recurring events not supported yet)"
             />
-          </FormGroup>
+          </FormGroup> */}
 
           {isRecurring ? dayPicker() : datePicker()}
 
