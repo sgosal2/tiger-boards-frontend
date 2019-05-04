@@ -8,12 +8,16 @@ import {
 } from "@material-ui/core";
 
 import { SpaceAvailabilityContext } from "./space-availability-board";
+import useDataApi from "../../utilities/use-data-api";
+import config from "../../config.json";
 
 export const SpaceAvailabilityParameters = ({ disabled }) => {
   const {
     state: { building, datetime },
     dispatch
   } = useContext(SpaceAvailabilityContext);
+
+  const buildingsApi = useDataApi(config.API_BUILDINGS);
 
   return (
     <div id="space-availability-parameters">
@@ -26,15 +30,23 @@ export const SpaceAvailabilityParameters = ({ disabled }) => {
           onChange={event => {
             dispatch({ type: "change-building", value: event.target.value });
           }}
-          disabled={disabled}
+          disabled={disabled || buildingsApi.isLoading}
           name="building"
         >
-          {/* TODO: Create a generator to generate these menuitems from data in
-           state. Do not leave these here. */}
-          <MenuItem value="CTC">Chambers</MenuItem>
-          <MenuItem value="AH">Anderson</MenuItem>
-          <MenuItem value="KH">Khoury</MenuItem>
-          <MenuItem value="BH">Baun</MenuItem>
+          {buildingsApi.isLoading ? (
+            <MenuItem value="null">Loading...</MenuItem>
+          ) : (
+            buildingsApi.data.map(buildingData => {
+              return (
+                <MenuItem
+                  key={buildingData.building_id}
+                  value={buildingData.building_id}
+                >
+                  {buildingData.building_name}
+                </MenuItem>
+              );
+            })
+          )}
         </Select>
       </FormControl>
       <FormControl className="space-availability-parameter-formcontrol">
@@ -44,9 +56,9 @@ export const SpaceAvailabilityParameters = ({ disabled }) => {
           type="datetime-local"
           value={datetime}
           disabled={disabled}
-          onChange={event => {
-            dispatch({ type: "change-datetime", value: event.target.value });
-          }}
+          onChange={event =>
+            dispatch({ type: "change-datetime", value: event.target.value })
+          }
           InputLabelProps={{
             shrink: true
           }}
