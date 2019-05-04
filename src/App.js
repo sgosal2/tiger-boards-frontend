@@ -34,6 +34,7 @@ const noMatch = React.lazy(() => import("./components/no-match"));
 
 const App = () => {
   const [userEmail, changeUserEmail] = useState(null);
+  const [userIsAdmin, changeUserAdminStatus] = useState(false);
 
   return (
     <MuiThemeProvider theme={theme}>
@@ -42,7 +43,9 @@ const App = () => {
           <UserContext.Provider
             value={{
               email: userEmail,
-              changeUserEmail: email => changeUserEmail(email)
+              isAdmin: userIsAdmin,
+              changeUserEmail: email => changeUserEmail(email),
+              changeAdminStatus: status => changeUserAdminStatus(status)
             }}
           >
             <TigerBoardsAppBar />
